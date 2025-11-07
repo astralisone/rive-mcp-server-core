@@ -19,20 +19,25 @@ Get up and running in under 5 minutes:
 # 1. Install dependencies
 npm install
 
-# 2. Initialize storage
+# 2. Build the packages
+npm run build:packages
+
+# 3. Initialize storage
 npm run init-storage
 
-# 3. Seed example data
+# 4. Seed example data
 npm run seed-manifests
 
-# 4. Verify setup
+# 5. Verify setup
 npm run validate-setup
 
-# 5. Start the MCP server
-npm start
+# 6. Start the MCP server (outputs connection config)
+npm run mcp-server
 ```
 
-See the [Quick Start Guide](./QUICKSTART.md) for detailed instructions.
+The server will output the exact configuration you need to add to your MCP client (Claude Desktop, Cline, etc.).
+
+See [MCP_CLIENT_CONFIGURATION.md](./docs/MCP_CLIENT_CONFIGURATION.md) for detailed client setup instructions.
 
 ## Architecture Overview
 

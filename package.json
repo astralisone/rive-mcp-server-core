@@ -30,7 +30,9 @@
     "generate-manifest": "ts-node tools/scripts/generate-manifest.ts",
     "update-manifest-index": "ts-node tools/scripts/update-manifest-index.ts",
     "validate-manifests": "ts-node tools/scripts/validate-manifests.ts",
-    "batch-import": "ts-node tools/scripts/batch-import.ts"
+    "batch-import": "ts-node tools/scripts/batch-import.ts",
+    "mcp-server": "node packages/mcp-server/dist/index.js",
+    "mcp-config": "node packages/mcp-server/dist/index.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.523.0",

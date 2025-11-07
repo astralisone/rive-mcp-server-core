@@ -216,10 +216,42 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 });
 
+// Output connection configuration for consumers
+function outputConnectionConfig() {
+  const serverPath = process.argv[1] || __filename;
+  const config = {
+    mcpServers: {
+      "astralismotion-rive-mcp": {
+        command: "node",
+        args: [serverPath]
+      }
+    }
+  };
+
+  console.error("\n" + "=".repeat(80));
+  console.error("🎨 Astralis Motion Rive MCP Server");
+  console.error("=".repeat(80));
+  console.error("\nAdd this configuration to your MCP client settings:\n");
+  console.error("For Claude Desktop (~/.config/claude/claude_desktop_config.json):");
+  console.error("For Cline (VSCode settings):");
+  console.error("For other MCP clients (mcp.json or similar):\n");
+  console.error(JSON.stringify(config, null, 2));
+  console.error("\n" + "=".repeat(80));
+  console.error("Available Tools:");
+  console.error("  • list_libraries       - List all Rive libraries");
+  console.error("  • list_components      - List Rive components");
+  console.error("  • get_component_detail - Get component details");
+  console.error("  • get_runtime_surface  - Extract state machines & inputs");
+  console.error("  • generate_wrapper     - Generate React/Vue/Stencil wrappers");
+  console.error("  • compose_scene        - Compose multi-component scenes");
+  console.error("=".repeat(80));
+  console.error("\n✓ Server ready and listening on stdio\n");
+}
+
 // Start server
 const transport = new StdioServerTransport();
 server.connect(transport).then(() => {
-  console.error("Astralis Motion Rive MCP Server running on stdio");
+  outputConnectionConfig();
 }).catch((error) => {
   console.error("Failed to start server:", error);
   process.exit(1);
