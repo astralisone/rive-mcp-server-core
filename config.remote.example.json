@@ -1,0 +1,39 @@
+{
+  "storage": {
+    "backend": "remote",
+    "remote": {
+      "manifestUrl": "https://cdn.example.com/rive/manifests",
+      "assetBaseUrl": "https://cdn.example.com/rive/assets",
+      "timeout": 30000,
+      "headers": {
+        "Authorization": "Bearer your-token-here"
+      }
+    }
+  },
+  "runtime": {
+    "version": "latest",
+    "canvas": {
+      "antialias": true,
+      "powerPreference": "default",
+      "premultipliedAlpha": true
+    },
+    "performance": {
+      "maxInstances": 150,
+      "enableCaching": true,
+      "cacheSize": 104857600
+    }
+  },
+  "indexing": {
+    "autoIndex": false,
+    "enableCache": true,
+    "cacheTTL": 1800
+  },
+  "server": {
+    "name": "astralismotion-rive-mcp",
+    "version": "0.1.0"
+  },
+  "logging": {
+    "level": "info",
+    "format": "text"
+  }
+}

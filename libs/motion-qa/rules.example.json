@@ -1,0 +1,5 @@
+{
+  "requireApprovedTokens": true,
+  "enforceRuntimeVersion": "web-v2",
+  "forbidDirectRivUrlInApps": true
+}

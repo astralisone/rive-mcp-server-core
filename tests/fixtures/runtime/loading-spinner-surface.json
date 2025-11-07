@@ -1,0 +1,55 @@
+{
+  "componentId": "ui-loading-spinner",
+  "runtimeVersion": "web-v2",
+  "surface": {
+    "stateMachines": [
+      {
+        "name": "LoadingStateMachine",
+        "inputs": [
+          {
+            "name": "isLoading",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "progress",
+            "type": "number",
+            "value": 0
+          },
+          {
+            "name": "speed",
+            "type": "number",
+            "value": 1.0
+          },
+          {
+            "name": "styleIndex",
+            "type": "number",
+            "value": 0
+          }
+        ],
+        "triggers": [
+          {
+            "name": "complete",
+            "description": "Completes the loading animation"
+          }
+        ],
+        "events": [
+          {
+            "name": "LoadingStarted",
+            "handler": "onLoadingStarted"
+          },
+          {
+            "name": "LoadingComplete",
+            "handler": "onLoadingComplete"
+          }
+        ]
+      }
+    ]
+  },
+  "integrationCode": {
+    "react": "LoadingSpinnerComponent",
+    "vue": "LoadingSpinnerVue",
+    "stencil": "loading-spinner",
+    "angular": "LoadingSpinnerModule"
+  }
+}

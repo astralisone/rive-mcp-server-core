@@ -1,0 +1,33 @@
+{
+  "name": "rive-synth",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/rive-synth/src",
+  "projectType": "library",
+  "tags": ["type:package", "scope:rive"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/rive-synth/dist",
+        "main": "packages/rive-synth/src/index.ts",
+        "tsConfig": "packages/rive-synth/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/rive-synth"],
+      "options": {
+        "jestConfig": "packages/rive-synth/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/rive-synth/tsconfig.json"
+      }
+    }
+  }
+}

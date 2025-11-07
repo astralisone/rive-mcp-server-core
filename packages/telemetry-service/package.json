@@ -1,0 +1,37 @@
+{
+  "name": "@astralismotion/telemetry-service",
+  "version": "0.1.0",
+  "description": "Comprehensive telemetry and analytics service for Rive MCP components",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "telemetry",
+    "analytics",
+    "rive",
+    "mcp",
+    "metrics",
+    "performance",
+    "tracking"
+  ],
+  "author": "AstralisMotion",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

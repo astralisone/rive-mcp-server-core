@@ -1,0 +1,11 @@
+{
+  "name": "wrapper-generator-agent",
+  "description": "Generates framework-specific wrappers from runtime surfaces.",
+  "uses_tools": [
+    "get_runtime_surface",
+    "generate_wrapper"
+  ],
+  "writes": [
+    "libs/rive-components"
+  ]
+}

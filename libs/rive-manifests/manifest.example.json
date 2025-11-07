@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "componentId": "astraliswins-slot-spin",
+      "name": "AstralisWins Slot Spin",
+      "libraryId": "astraliswins",
+      "fileUrl": "/rive/astraliswins/slot-spin.riv",
+      "stateMachines": [
+        "SpinSM"
+      ],
+      "inputs": [
+        {
+          "name": "isSpinning",
+          "type": "bool"
+        },
+        {
+          "name": "winAmount",
+          "type": "number"
+        }
+      ],
+      "events": [
+        {
+          "name": "WinSequenceComplete"
+        }
+      ],
+      "runtimeVersion": "web-v2"
+    }
+  ]
+}

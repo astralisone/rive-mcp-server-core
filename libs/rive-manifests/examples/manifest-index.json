@@ -1,0 +1,409 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-22T10:15:00Z",
+  "libraries": {
+    "astralis-casino": {
+      "id": "astralis-casino",
+      "name": "Astralis Casino Components",
+      "description": "Complete library of animated casino game components for the Astralis brand",
+      "version": "1.0.0",
+      "components": [
+        "astralis-slot-machine",
+        "game-character-avatar"
+      ],
+      "tags": ["casino", "gaming", "entertainment", "astralis"],
+      "author": "Astralis Motion Team",
+      "license": "Proprietary",
+      "createdAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-22T10:15:00Z",
+      "storageBackend": "local",
+      "storagePath": "libraries/astralis-casino"
+    },
+    "ui-components": {
+      "id": "ui-components",
+      "name": "Premium UI Components",
+      "description": "Professional UI component library with modern animations and interactions",
+      "version": "2.0.0",
+      "components": [
+        "ui-loading-spinner",
+        "ui-interactive-button"
+      ],
+      "tags": ["ui", "components", "interface", "design-system"],
+      "author": "UI Team",
+      "license": "MIT",
+      "createdAt": "2024-12-01T09:00:00Z",
+      "updatedAt": "2025-01-20T14:45:00Z",
+      "storageBackend": "local",
+      "storagePath": "libraries/ui-components"
+    }
+  },
+  "components": {
+    "astralis-slot-machine": {
+      "id": "astralis-slot-machine",
+      "name": "Astralis Slot Machine",
+      "description": "A fully featured slot machine with spinning reels, win animations, and celebration effects",
+      "version": "1.0.0",
+      "libraryId": "astralis-casino",
+      "riveFile": "/rive/astralis/slot-machine.riv",
+      "thumbnailUrl": "https://cdn.astralis.com/thumbnails/slot-machine.png",
+      "previewUrl": "https://cdn.astralis.com/previews/slot-machine.mp4",
+      "tags": ["casino", "game", "animation", "slot-machine"],
+      "category": "game-elements",
+      "author": "Astralis Motion Team",
+      "createdAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-15T10:00:00Z",
+      "stateMachines": [
+        {
+          "name": "SlotMachineSM",
+          "description": "Main state machine controlling slot machine behavior",
+          "inputs": [
+            {
+              "name": "isSpinning",
+              "type": "bool",
+              "defaultValue": false,
+              "description": "Controls whether the reels are spinning"
+            },
+            {
+              "name": "spinSpeed",
+              "type": "number",
+              "defaultValue": 1.0,
+              "min": 0.5,
+              "max": 2.0,
+              "description": "Speed multiplier for the spin animation"
+            },
+            {
+              "name": "winAmount",
+              "type": "number",
+              "defaultValue": 0,
+              "min": 0,
+              "max": 999999,
+              "description": "The amount won, triggers celebration animation when > 0"
+            },
+            {
+              "name": "triggerSpin",
+              "type": "trigger",
+              "description": "Triggers a new spin of the reels"
+            },
+            {
+              "name": "stopReels",
+              "type": "trigger",
+              "description": "Stops the reels at their final position"
+            }
+          ],
+          "events": [
+            {
+              "name": "SpinStarted",
+              "description": "Fired when the reels begin spinning",
+              "eventType": "animation"
+            },
+            {
+              "name": "SpinComplete",
+              "description": "Fired when all reels have stopped",
+              "eventType": "animation"
+            },
+            {
+              "name": "WinSequenceComplete",
+              "description": "Fired when the win celebration animation finishes",
+              "eventType": "animation"
+            },
+            {
+              "name": "ReelStopped",
+              "description": "Fired each time an individual reel stops",
+              "eventType": "animation"
+            }
+          ]
+        }
+      ],
+      "artboards": ["MainSlotMachine", "WinOverlay", "SparkleEffects"],
+      "dataBindings": [
+        {
+          "name": "reelSymbols",
+          "type": "array",
+          "itemSchema": {
+            "symbol": "string",
+            "index": "number"
+          },
+          "description": "Array of symbols to display on the reels",
+          "required": true
+        },
+        {
+          "name": "payoutTable",
+          "type": "object",
+          "description": "Configuration for win conditions and payouts",
+          "required": false
+        }
+      ],
+      "recommendedFrameworks": ["react", "vue", "stencil"],
+      "runtimeVersion": "web-v2",
+      "storageBackend": "local",
+      "storagePath": "components/astralis-casino/slot-machine"
+    },
+    "ui-loading-spinner": {
+      "id": "ui-loading-spinner",
+      "name": "Premium Loading Spinner",
+      "description": "An elegant, customizable loading spinner with multiple style variations",
+      "version": "1.2.0",
+      "libraryId": "ui-components",
+      "riveFile": "/rive/ui/loading-spinner.riv",
+      "thumbnailUrl": "https://cdn.astralis.com/thumbnails/loading-spinner.png",
+      "tags": ["ui", "loading", "spinner", "indicator"],
+      "category": "ui-elements",
+      "author": "UI Team",
+      "createdAt": "2025-01-10T08:30:00Z",
+      "updatedAt": "2025-01-20T14:45:00Z",
+      "stateMachines": [
+        {
+          "name": "LoadingStateMachine",
+          "description": "Controls loading spinner behavior and appearance",
+          "inputs": [
+            {
+              "name": "isLoading",
+              "type": "bool",
+              "defaultValue": true,
+              "description": "Shows or hides the loading animation"
+            },
+            {
+              "name": "progress",
+              "type": "number",
+              "defaultValue": 0,
+              "min": 0,
+              "max": 100,
+              "description": "Progress percentage for determinate loading (0-100)"
+            },
+            {
+              "name": "speed",
+              "type": "number",
+              "defaultValue": 1.0,
+              "min": 0.1,
+              "max": 3.0,
+              "description": "Animation speed multiplier"
+            },
+            {
+              "name": "styleIndex",
+              "type": "number",
+              "defaultValue": 0,
+              "min": 0,
+              "max": 4,
+              "description": "Index of the style variant (0: default, 1: minimal, 2: bold, 3: neon, 4: retro)"
+            },
+            {
+              "name": "complete",
+              "type": "trigger",
+              "description": "Triggers the completion animation"
+            }
+          ],
+          "events": [
+            {
+              "name": "LoadingStarted",
+              "description": "Fired when loading animation begins",
+              "eventType": "state"
+            },
+            {
+              "name": "LoadingComplete",
+              "description": "Fired when loading completes and animation finishes",
+              "eventType": "state"
+            }
+          ]
+        }
+      ],
+      "artboards": ["Spinner", "ProgressBar"],
+      "recommendedFrameworks": ["react", "vue", "stencil", "angular"],
+      "runtimeVersion": "web-v2",
+      "storageBackend": "local",
+      "storagePath": "components/ui/loading-spinner"
+    },
+    "ui-interactive-button": {
+      "id": "ui-interactive-button",
+      "name": "Interactive Button",
+      "description": "A highly interactive button with hover, press, and disabled states",
+      "version": "2.0.0",
+      "libraryId": "ui-components",
+      "riveFile": "/rive/ui/interactive-button.riv",
+      "thumbnailUrl": "https://cdn.astralis.com/thumbnails/button.png",
+      "previewUrl": "https://cdn.astralis.com/previews/button.mp4",
+      "tags": ["ui", "button", "interactive", "animation"],
+      "category": "ui-elements",
+      "author": "UI Team",
+      "createdAt": "2024-12-01T09:00:00Z",
+      "updatedAt": "2025-01-18T16:20:00Z",
+      "stateMachines": [
+        {
+          "name": "ButtonStateMachine",
+          "description": "Interactive button state machine with all button states",
+          "inputs": [
+            {
+              "name": "isHovered",
+              "type": "bool",
+              "defaultValue": false,
+              "description": "True when mouse is hovering over button"
+            },
+            {
+              "name": "isPressed",
+              "type": "bool",
+              "defaultValue": false,
+              "description": "True when button is being pressed"
+            },
+            {
+              "name": "isDisabled",
+              "type": "bool",
+              "defaultValue": false,
+              "description": "Disables button interaction"
+            },
+            {
+              "name": "variant",
+              "type": "number",
+              "defaultValue": 0,
+              "min": 0,
+              "max": 3,
+              "description": "Button variant (0: primary, 1: secondary, 2: danger, 3: success)"
+            },
+            {
+              "name": "onClick",
+              "type": "trigger",
+              "description": "Triggers click animation and feedback"
+            }
+          ],
+          "events": [
+            {
+              "name": "ButtonClicked",
+              "description": "Fired when button click animation completes",
+              "eventType": "interaction"
+            },
+            {
+              "name": "HoverEnter",
+              "description": "Fired when hover state begins",
+              "eventType": "interaction"
+            },
+            {
+              "name": "HoverExit",
+              "description": "Fired when hover state ends",
+              "eventType": "interaction"
+            }
+          ]
+        }
+      ],
+      "artboards": ["Button"],
+      "dataBindings": [
+        {
+          "name": "buttonText",
+          "type": "text",
+          "description": "Text label to display on the button",
+          "required": false
+        },
+        {
+          "name": "iconUrl",
+          "type": "image",
+          "description": "Optional icon image to display",
+          "required": false
+        }
+      ],
+      "recommendedFrameworks": ["react", "vue", "stencil", "angular", "svelte"],
+      "runtimeVersion": "web-v2",
+      "storageBackend": "local",
+      "storagePath": "components/ui/interactive-button"
+    },
+    "game-character-avatar": {
+      "id": "game-character-avatar",
+      "name": "Game Character Avatar",
+      "description": "Animated character avatar with emotions, idle animations, and reactions",
+      "version": "1.5.0",
+      "libraryId": "astralis-casino",
+      "riveFile": "/rive/astralis/character-avatar.riv",
+      "thumbnailUrl": "https://cdn.astralis.com/thumbnails/character-avatar.png",
+      "previewUrl": "https://cdn.astralis.com/previews/character-avatar.mp4",
+      "tags": ["character", "avatar", "animation", "emotion"],
+      "category": "game-elements",
+      "author": "Character Design Team",
+      "createdAt": "2024-11-20T11:00:00Z",
+      "updatedAt": "2025-01-22T10:15:00Z",
+      "stateMachines": [
+        {
+          "name": "CharacterSM",
+          "description": "Character behavior and emotion system",
+          "inputs": [
+            {
+              "name": "emotionIndex",
+              "type": "number",
+              "defaultValue": 0,
+              "min": 0,
+              "max": 7,
+              "description": "Emotion to display (0: neutral, 1: happy, 2: sad, 3: excited, 4: angry, 5: surprised, 6: thinking, 7: celebrating)"
+            },
+            {
+              "name": "isTalking",
+              "type": "bool",
+              "defaultValue": false,
+              "description": "Triggers talking animation"
+            },
+            {
+              "name": "lookAtX",
+              "type": "number",
+              "defaultValue": 0,
+              "min": -100,
+              "max": 100,
+              "description": "Horizontal look direction (-100 to 100)"
+            },
+            {
+              "name": "lookAtY",
+              "type": "number",
+              "defaultValue": 0,
+              "min": -50,
+              "max": 50,
+              "description": "Vertical look direction (-50 to 50)"
+            },
+            {
+              "name": "triggerReaction",
+              "type": "trigger",
+              "description": "Triggers a one-shot reaction based on current emotion"
+            },
+            {
+              "name": "wave",
+              "type": "trigger",
+              "description": "Triggers wave animation"
+            }
+          ],
+          "events": [
+            {
+              "name": "EmotionChanged",
+              "description": "Fired when emotion transition completes",
+              "eventType": "state"
+            },
+            {
+              "name": "ReactionComplete",
+              "description": "Fired when one-shot reaction animation finishes",
+              "eventType": "animation"
+            },
+            {
+              "name": "WaveComplete",
+              "description": "Fired when wave animation finishes",
+              "eventType": "animation"
+            }
+          ]
+        }
+      ],
+      "artboards": ["Character", "Eyes", "Mouth", "Accessories"],
+      "dataBindings": [
+        {
+          "name": "characterConfig",
+          "type": "object",
+          "description": "Character customization options (skin tone, hair style, outfit)",
+          "required": false
+        },
+        {
+          "name": "accessories",
+          "type": "array",
+          "itemSchema": {
+            "type": "string",
+            "visible": "boolean"
+          },
+          "description": "List of accessories to show/hide",
+          "required": false
+        }
+      ],
+      "recommendedFrameworks": ["react", "vue", "unity", "unreal"],
+      "runtimeVersion": "web-v2",
+      "storageBackend": "local",
+      "storagePath": "components/astralis-casino/character-avatar"
+    }
+  }
+}

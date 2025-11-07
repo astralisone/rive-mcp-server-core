@@ -1,0 +1,38 @@
+{
+  "storage": {
+    "backend": "s3",
+    "s3": {
+      "bucket": "my-rive-bucket",
+      "region": "us-east-1",
+      "manifestPrefix": "manifests",
+      "assetsPrefix": "assets"
+    }
+  },
+  "runtime": {
+    "version": "latest",
+    "canvas": {
+      "antialias": true,
+      "powerPreference": "high-performance",
+      "premultipliedAlpha": true
+    },
+    "performance": {
+      "maxInstances": 200,
+      "enableCaching": true,
+      "cacheSize": 104857600
+    }
+  },
+  "indexing": {
+    "autoIndex": true,
+    "indexInterval": 300000,
+    "enableCache": true,
+    "cacheTTL": 600
+  },
+  "server": {
+    "name": "astralismotion-rive-mcp",
+    "version": "0.1.0"
+  },
+  "logging": {
+    "level": "info",
+    "format": "json"
+  }
+}

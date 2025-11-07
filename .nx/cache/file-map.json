@@ -1,0 +1,1031 @@
+{
+  "version": "6.0",
+  "nxVersion": "18.3.5",
+  "deps": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "@rive-app/canvas": "^2.9.0",
+    "@rive-app/react-canvas": "^4.5.0",
+    "@stencil/core": "^4.7.0",
+    "@aws-sdk/client-s3": "^3.523.0",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "nx": "^18.0.0",
+    "@nx/workspace": "^18.0.0",
+    "@nx/node": "^18.0.0",
+    "@nx/react": "^18.0.0",
+    "@nx/js": "^18.0.0",
+    "@nx/jest": "^18.0.0",
+    "@nx/webpack": "^18.0.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.1.1",
+    "ts-node": "^10.9.2",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0"
+  },
+  "pathMappings": {
+    "@astralismotion/rive-components": [
+      "libs/rive-components/src/index.ts"
+    ],
+    "@astralismotion/motion-scenes": [
+      "libs/motion-scenes/src/index.ts"
+    ],
+    "@astralismotion/motion-specs": [
+      "libs/motion-specs/src/index.ts"
+    ],
+    "@astralismotion/rive-manifests": [
+      "libs/rive-manifests/src/index.ts"
+    ],
+    "@astralismotion/motion-utils": [
+      "libs/motion-utils/src/index.ts"
+    ],
+    "@astralismotion/design-tokens": [
+      "libs/design-tokens/src/index.ts"
+    ],
+    "@astralismotion/motion-qa": [
+      "libs/motion-qa/src/index.ts"
+    ],
+    "@astralismotion/types": [
+      "libs/types/src/index.ts"
+    ],
+    "@astralismotion/mcp-server": [
+      "packages/mcp-server/src/index.ts"
+    ],
+    "@astralismotion/mcp-agents": [
+      "packages/mcp-agents/index.ts"
+    ],
+    "@astralismotion/telemetry-service": [
+      "packages/telemetry-service/src/index.ts"
+    ],
+    "@astralismotion/scene-composer": [
+      "packages/scene-composer/src/index.ts"
+    ],
+    "@astralismotion/rive-synth": [
+      "packages/rive-synth/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ],
+  "fileMap": {
+    "projectFileMap": {
+      "rive-synth": [
+        {
+          "file": "packages/rive-synth/README.md",
+          "hash": "1588052732155735593"
+        },
+        {
+          "file": "packages/rive-synth/project.json",
+          "hash": "5016492815811447699"
+        }
+      ],
+      "cli": [
+        {
+          "file": "apps/cli/README.md",
+          "hash": "874258760637819155"
+        },
+        {
+          "file": "apps/cli/project.json",
+          "hash": "7467452961429554612"
+        }
+      ],
+      "motion-qa": [
+        {
+          "file": "libs/motion-qa/project.json",
+          "hash": "9950537796702478047"
+        },
+        {
+          "file": "libs/motion-qa/rules.example.json",
+          "hash": "5899205743140423421"
+        }
+      ],
+      "dashboard": [
+        {
+          "file": "apps/dashboard/README.md",
+          "hash": "13948553901338724871"
+        },
+        {
+          "file": "apps/dashboard/project.json",
+          "hash": "5497690741545406067"
+        }
+      ],
+      "web": [
+        {
+          "file": "apps/web/README.md",
+          "hash": "4831794933960497699"
+        },
+        {
+          "file": "apps/web/project.json",
+          "hash": "8546414545781049742"
+        }
+      ],
+      "motion-specs": [
+        {
+          "file": "libs/motion-specs/README.md",
+          "hash": "9061131169027540037"
+        },
+        {
+          "file": "libs/motion-specs/jackpot-win-spec.json",
+          "hash": "15260898351953478033"
+        },
+        {
+          "file": "libs/motion-specs/project.json",
+          "hash": "9597289483286547355"
+        }
+      ],
+      "mcp-server": [
+        {
+          "file": "packages/mcp-server/CONFIGURATION.md",
+          "hash": "15528043961159430089"
+        },
+        {
+          "file": "packages/mcp-server/IMPLEMENTATION_SUMMARY.md",
+          "hash": "11860688134295809770"
+        },
+        {
+          "file": "packages/mcp-server/README.md",
+          "hash": "1446481076717291803"
+        },
+        {
+          "file": "packages/mcp-server/RIVE_INTEGRATION.md",
+          "hash": "6911728897337184818"
+        },
+        {
+          "file": "packages/mcp-server/TOOLS_DOCUMENTATION.md",
+          "hash": "18439313670954181553"
+        },
+        {
+          "file": "packages/mcp-server/package.json",
+          "hash": "2712148870086728196"
+        },
+        {
+          "file": "packages/mcp-server/project.json",
+          "hash": "2001079669669714715"
+        },
+        {
+          "file": "packages/mcp-server/src/config/index.ts",
+          "hash": "17874744382392015193",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/config/loader.ts",
+          "hash": "15796001140574623817",
+          "deps": [
+            "npm:path",
+            "npm:fs/promises",
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/generators/README.md",
+          "hash": "15248960407081263014"
+        },
+        {
+          "file": "packages/mcp-server/src/generators/index.ts",
+          "hash": "12198973335181029072"
+        },
+        {
+          "file": "packages/mcp-server/src/generators/templates/react.template.ts",
+          "hash": "1416768488680282686"
+        },
+        {
+          "file": "packages/mcp-server/src/generators/templates/stencil.template.ts",
+          "hash": "158293434590085423"
+        },
+        {
+          "file": "packages/mcp-server/src/generators/templates/vue.template.ts",
+          "hash": "1766881011109827996"
+        },
+        {
+          "file": "packages/mcp-server/src/generators/types.ts",
+          "hash": "18007090382048182414",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/generators/utils.ts",
+          "hash": "17769040162764352305",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/index.ts",
+          "hash": "14752925526434533408",
+          "deps": [
+            "npm:@modelcontextprotocol/sdk/server"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/storage/base.ts",
+          "hash": "12641396013331842908",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/storage/cache.ts",
+          "hash": "5990406329901748585",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/storage/factory.ts",
+          "hash": "8279331097223078",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/storage/index.ts",
+          "hash": "7789244177875579093",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/storage/local.ts",
+          "hash": "5007863398250510860",
+          "deps": [
+            "npm:path",
+            "npm:fs/promises",
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/storage/remote.ts",
+          "hash": "2327324381060034907",
+          "deps": [
+            "npm:https",
+            "npm:http",
+            "npm:url",
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/storage/s3.ts",
+          "hash": "8983037330671147220",
+          "deps": [
+            "npm:@aws-sdk/client-s3",
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/tools/composeScene.ts",
+          "hash": "553977029711062174",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/tools/composeSceneEnhanced.ts",
+          "hash": "14240151389995054084",
+          "deps": [
+            "scene-composer",
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/tools/generateWrapper.ts",
+          "hash": "6948023460875103007",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path",
+            "types"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/tools/getComponentDetail.ts",
+          "hash": "9046129903532276588"
+        },
+        {
+          "file": "packages/mcp-server/src/tools/getRuntimeSurface.ts",
+          "hash": "8885600998046334311"
+        },
+        {
+          "file": "packages/mcp-server/src/tools/listComponents.ts",
+          "hash": "3081572364591967551"
+        },
+        {
+          "file": "packages/mcp-server/src/tools/listLibraries.ts",
+          "hash": "11254805694760749326"
+        },
+        {
+          "file": "packages/mcp-server/src/types/index.ts",
+          "hash": "10542360341320037185"
+        },
+        {
+          "file": "packages/mcp-server/src/utils/codeGenerators.ts",
+          "hash": "9137603378343068835"
+        },
+        {
+          "file": "packages/mcp-server/src/utils/riveParser.ts",
+          "hash": "13515674207262102876",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/src/utils/storage.ts",
+          "hash": "3286130676232109048",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/tests/integration/composeScene.test.ts",
+          "hash": "767641888583071094",
+          "deps": [
+            "npm:@jest/globals",
+            "npm:path",
+            "npm:fs/promises"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/tests/integration/getComponentDetail.test.ts",
+          "hash": "14129821302001355541",
+          "deps": [
+            "npm:@jest/globals",
+            "npm:path",
+            "npm:fs/promises"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/tests/integration/getRuntimeSurface.test.ts",
+          "hash": "8204296904700749951",
+          "deps": [
+            "npm:@jest/globals",
+            "npm:path",
+            "npm:fs/promises"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/tests/integration/listComponents.test.ts",
+          "hash": "9769893847847607880",
+          "deps": [
+            "npm:@jest/globals",
+            "npm:path",
+            "npm:fs/promises"
+          ]
+        },
+        {
+          "file": "packages/mcp-server/tsconfig.json",
+          "hash": "1232137044737461607"
+        }
+      ],
+      "rive-manifests": [
+        {
+          "file": "libs/rive-manifests/examples/astralis-casino-library.json",
+          "hash": "15106815398674989037"
+        },
+        {
+          "file": "libs/rive-manifests/examples/button-animation-component.json",
+          "hash": "10577149289440945068"
+        },
+        {
+          "file": "libs/rive-manifests/examples/character-avatar-component.json",
+          "hash": "13064595486506317488"
+        },
+        {
+          "file": "libs/rive-manifests/examples/loading-spinner-component.json",
+          "hash": "12743162025467184823"
+        },
+        {
+          "file": "libs/rive-manifests/examples/manifest-index.json",
+          "hash": "4759342629038623259"
+        },
+        {
+          "file": "libs/rive-manifests/examples/slot-machine-component.json",
+          "hash": "13444135326611028536"
+        },
+        {
+          "file": "libs/rive-manifests/examples/ui-components-library.json",
+          "hash": "15540799349480988476"
+        },
+        {
+          "file": "libs/rive-manifests/manifest.example.json",
+          "hash": "105654769985665674"
+        },
+        {
+          "file": "libs/rive-manifests/project.json",
+          "hash": "8949729624575101254"
+        }
+      ],
+      "scene-composer": [
+        {
+          "file": "packages/scene-composer/README.md",
+          "hash": "6652710473245188267"
+        },
+        {
+          "file": "packages/scene-composer/project.json",
+          "hash": "13816805800583997732"
+        },
+        {
+          "file": "packages/scene-composer/src/codegen/runtime-generator.ts",
+          "hash": "13014588750955532854"
+        },
+        {
+          "file": "packages/scene-composer/src/core/event-router.ts",
+          "hash": "10620081211169436319"
+        },
+        {
+          "file": "packages/scene-composer/src/core/scene-graph.ts",
+          "hash": "14985538520316655537"
+        },
+        {
+          "file": "packages/scene-composer/src/core/timeline.ts",
+          "hash": "2235550097138269231"
+        },
+        {
+          "file": "packages/scene-composer/src/index.ts",
+          "hash": "5394799524802514483"
+        },
+        {
+          "file": "packages/scene-composer/src/runtime/scene-runtime.ts",
+          "hash": "8342546706587289777"
+        },
+        {
+          "file": "packages/scene-composer/src/types/scene-spec.ts",
+          "hash": "10979770444161436081"
+        },
+        {
+          "file": "packages/scene-composer/src/validation/scene-validator.ts",
+          "hash": "2162586465891624294"
+        }
+      ],
+      "design-tokens": [
+        {
+          "file": "libs/design-tokens/project.json",
+          "hash": "2407515200104032339"
+        },
+        {
+          "file": "libs/design-tokens/tokens.example.json",
+          "hash": "17772718507934313822"
+        }
+      ],
+      "motion-utils": [
+        {
+          "file": "libs/motion-utils/README.md",
+          "hash": "12885502764262505052"
+        },
+        {
+          "file": "libs/motion-utils/project.json",
+          "hash": "4605050774714860541"
+        }
+      ],
+      "telemetry-service": [
+        {
+          "file": "packages/telemetry-service/README.md",
+          "hash": "13577234104198898310"
+        },
+        {
+          "file": "packages/telemetry-service/package.json",
+          "hash": "919201234633841420"
+        },
+        {
+          "file": "packages/telemetry-service/project.json",
+          "hash": "14922918931805660922"
+        },
+        {
+          "file": "packages/telemetry-service/src/analytics/AnalyticsEngine.ts",
+          "hash": "2842137726874038656",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/config/defaultConfig.ts",
+          "hash": "235020067472179473",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/core/EventQueue.ts",
+          "hash": "3468785283653859112",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/core/EventTracker.ts",
+          "hash": "6943302087950480105",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/core/SessionManager.ts",
+          "hash": "14987546937671993240",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/core/TelemetryCollector.ts",
+          "hash": "2192102544858906932",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/index.ts",
+          "hash": "14666151663367863045",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/instrumentation/AutoInstrumentation.ts",
+          "hash": "12239620626673637249",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/instrumentation/PerformanceMonitor.ts",
+          "hash": "3170886489137516577",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/mcp/telemetryTools.ts",
+          "hash": "15549057083019990163",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/metrics/MetricsCollector.ts",
+          "hash": "3074785489121426423",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/storage/MemoryStorage.ts",
+          "hash": "2201553196496042874",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/storage/StorageAdapter.ts",
+          "hash": "6651091891345411530",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/src/storage/TimeSeriesStorage.ts",
+          "hash": "5530366156283886246",
+          "deps": [
+            "types"
+          ]
+        },
+        {
+          "file": "packages/telemetry-service/tsconfig.json",
+          "hash": "16044030073618091821"
+        }
+      ],
+      "demo": [
+        {
+          "file": "apps/demo/README.md",
+          "hash": "17189904956615901653"
+        },
+        {
+          "file": "apps/demo/project.json",
+          "hash": "14842646193983432243"
+        }
+      ],
+      "rive-components": [
+        {
+          "file": "libs/rive-components/README.md",
+          "hash": "15191906449782822420"
+        },
+        {
+          "file": "libs/rive-components/project.json",
+          "hash": "250880764560611425"
+        },
+        {
+          "file": "libs/rive-components/src/AstralisWinsSlot.tsx",
+          "hash": "1842730536136671922",
+          "deps": [
+            "npm:react",
+            "npm:@rive-app/react-canvas"
+          ]
+        }
+      ],
+      "mcp-agents": [
+        {
+          "file": "packages/mcp-agents/ARCHITECTURE.md",
+          "hash": "10803845196850903712"
+        },
+        {
+          "file": "packages/mcp-agents/QUICK_START.md",
+          "hash": "15643311725357610135"
+        },
+        {
+          "file": "packages/mcp-agents/README.md",
+          "hash": "13015986231962416158"
+        },
+        {
+          "file": "packages/mcp-agents/SUMMARY.md",
+          "hash": "17539116739071345152"
+        },
+        {
+          "file": "packages/mcp-agents/agents/motion-spec-agent.json",
+          "hash": "16053985747215314345"
+        },
+        {
+          "file": "packages/mcp-agents/agents/qa-agent.json",
+          "hash": "476777306279582264"
+        },
+        {
+          "file": "packages/mcp-agents/agents/scene-composer-agent.json",
+          "hash": "15251082421793343850"
+        },
+        {
+          "file": "packages/mcp-agents/agents/telemetry-agent.json",
+          "hash": "5817100479484580862"
+        },
+        {
+          "file": "packages/mcp-agents/agents/wrapper-generator-agent.json",
+          "hash": "7218794400376406403"
+        },
+        {
+          "file": "packages/mcp-agents/index.ts",
+          "hash": "15056749560056820594"
+        },
+        {
+          "file": "packages/mcp-agents/package.json",
+          "hash": "12419651546919602770"
+        },
+        {
+          "file": "packages/mcp-agents/project.json",
+          "hash": "3466793524316359419"
+        },
+        {
+          "file": "packages/mcp-agents/src/agents/MotionSpecAgent.ts",
+          "hash": "3190492644055636478",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/agents/QAAgent.ts",
+          "hash": "1377409512010259007",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/agents/SceneComposerAgent.ts",
+          "hash": "9908362456670816227",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/agents/TelemetryAgent.ts",
+          "hash": "16147645722680190882"
+        },
+        {
+          "file": "packages/mcp-agents/src/agents/WrapperGeneratorAgent.ts",
+          "hash": "16388447612210566794",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/api/server.ts",
+          "hash": "9328859160688866696",
+          "deps": [
+            "npm:express",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/cli/index.ts",
+          "hash": "14212762407861656090",
+          "deps": [
+            "npm:commander",
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/config/index.ts",
+          "hash": "1766271192657306296",
+          "deps": [
+            "npm:fs/promises",
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/core/BaseAgent.ts",
+          "hash": "4794133602812610766",
+          "deps": [
+            "npm:events"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/core/MCPClient.ts",
+          "hash": "4926319139557539137",
+          "deps": [
+            "npm:@modelcontextprotocol/sdk/client/index.js",
+            "npm:@modelcontextprotocol/sdk/client/stdio.js"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/orchestrator/AgentRegistry.ts",
+          "hash": "10838516205578968088"
+        },
+        {
+          "file": "packages/mcp-agents/src/orchestrator/Orchestrator.ts",
+          "hash": "11580075701587461547",
+          "deps": [
+            "npm:events",
+            "npm:uuid"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/orchestrator/TaskQueue.ts",
+          "hash": "10295112273207693834",
+          "deps": [
+            "npm:events"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/orchestrator/WorkflowEngine.ts",
+          "hash": "8127157095021090001",
+          "deps": [
+            "npm:events",
+            "npm:uuid"
+          ]
+        },
+        {
+          "file": "packages/mcp-agents/src/types/index.ts",
+          "hash": "17211722238014774700"
+        },
+        {
+          "file": "packages/mcp-agents/src/workflows/patterns.ts",
+          "hash": "6261516709145457794"
+        },
+        {
+          "file": "packages/mcp-agents/tsconfig.json",
+          "hash": "14234637832318353949"
+        }
+      ],
+      "types": [
+        {
+          "file": "libs/types/config.d.ts",
+          "hash": "14800215139623331805"
+        },
+        {
+          "file": "libs/types/index.d.ts",
+          "hash": "8518853527567808055"
+        },
+        {
+          "file": "libs/types/manifest.d.ts",
+          "hash": "5032864333502112215"
+        },
+        {
+          "file": "libs/types/project.json",
+          "hash": "2430465737597617873"
+        },
+        {
+          "file": "libs/types/storage.d.ts",
+          "hash": "9402549313467090883"
+        },
+        {
+          "file": "libs/types/telemetry.d.ts",
+          "hash": "5308889999076192998"
+        }
+      ],
+      "motion-scenes": [
+        {
+          "file": "libs/motion-scenes/README.md",
+          "hash": "17216390846101283699"
+        },
+        {
+          "file": "libs/motion-scenes/project.json",
+          "hash": "18040805624345457717"
+        }
+      ]
+    },
+    "nonProjectFiles": [
+      {
+        "file": ".env.example",
+        "hash": "2833338221855402081"
+      },
+      {
+        "file": ".gitattributes",
+        "hash": "13194702717607086212"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "13125744229463403708"
+      },
+      {
+        "file": ".nxignore",
+        "hash": "2771900500790552496"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "14426788412867718700"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "6666082601939558221"
+      },
+      {
+        "file": "AGENT_FLOW.md",
+        "hash": "16434660447913486139"
+      },
+      {
+        "file": "ARCHITECTURE.md",
+        "hash": "16578381771985618314"
+      },
+      {
+        "file": "CLAUDE.md",
+        "hash": "17484622557826654139"
+      },
+      {
+        "file": "EXAMPLES_SUMMARY.md",
+        "hash": "7871393467559067132"
+      },
+      {
+        "file": "LICENSE",
+        "hash": "14155063984169319467"
+      },
+      {
+        "file": "MONOREPO_STRUCTURE.md",
+        "hash": "1645182713173518018"
+      },
+      {
+        "file": "NX_WORKSPACE_GUIDE.md",
+        "hash": "1923936992342275697"
+      },
+      {
+        "file": "QUICKSTART.md",
+        "hash": "16163528909311375926"
+      },
+      {
+        "file": "README.md",
+        "hash": "3186746800666274630"
+      },
+      {
+        "file": "ROADMAP.md",
+        "hash": "14006826392771631588"
+      },
+      {
+        "file": "astralismotion-rive-mcp.zip",
+        "hash": "12434158770163186444"
+      },
+      {
+        "file": "config.example.json",
+        "hash": "11604155448308787702"
+      },
+      {
+        "file": "config.remote.example.json",
+        "hash": "8603811310067412298"
+      },
+      {
+        "file": "config.s3.example.json",
+        "hash": "14135683342945124299"
+      },
+      {
+        "file": "docs/CONFIGURATION_STORAGE_SYSTEM.md",
+        "hash": "17423051933599931250"
+      },
+      {
+        "file": "docs/CREATION_SPEC_SCHEMA.md",
+        "hash": "1080126659043005454"
+      },
+      {
+        "file": "docs/DESIGN_TOKENS.md",
+        "hash": "7240153121096295149"
+      },
+      {
+        "file": "docs/GENERATOR_ARCHITECTURE.md",
+        "hash": "13339476684062352763"
+      },
+      {
+        "file": "docs/GENERATOR_EXAMPLES.md",
+        "hash": "4135522139076234580"
+      },
+      {
+        "file": "docs/GENERATOR_QUICKSTART.md",
+        "hash": "3932460366792238604"
+      },
+      {
+        "file": "docs/GENERATOR_SUMMARY.md",
+        "hash": "17065814917435943095"
+      },
+      {
+        "file": "docs/LOGIC_SURFACE_SCHEMA.md",
+        "hash": "11962180783155057059"
+      },
+      {
+        "file": "docs/RUNTIME_SURFACE_SCHEMA.md",
+        "hash": "6611754839110531188"
+      },
+      {
+        "file": "docs/SCENE_COMPOSITION.md",
+        "hash": "17923918836351152258"
+      },
+      {
+        "file": "docs/SCENE_COMPOSITION_IMPLEMENTATION_SUMMARY.md",
+        "hash": "8446163275608478482"
+      },
+      {
+        "file": "docs/SCENE_COMPOSITION_QUICK_REFERENCE.md",
+        "hash": "17270666402814940961"
+      },
+      {
+        "file": "docs/SCENE_SPEC_SCHEMA.md",
+        "hash": "868643136494154585"
+      },
+      {
+        "file": "docs/SYSTEM_ARCHITECTURE.md",
+        "hash": "5456038779368076894"
+      },
+      {
+        "file": "docs/TELEMETRY_ARCHITECTURE.md",
+        "hash": "9292355699616166497"
+      },
+      {
+        "file": "docs/examples/scene-composition-examples.json",
+        "hash": "11161260689714392962"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "185682870765125485"
+      },
+      {
+        "file": "nx.json",
+        "hash": "13113220026023658458"
+      },
+      {
+        "file": "package.json",
+        "hash": "9797634679588520878"
+      },
+      {
+        "file": "tests/fixtures/assets/mock-riv-metadata.json",
+        "hash": "5087178678576181652"
+      },
+      {
+        "file": "tests/fixtures/motion-specs/celebration-sequence.json",
+        "hash": "17277029199260539234"
+      },
+      {
+        "file": "tests/fixtures/motion-specs/ui-interaction-flow.json",
+        "hash": "3938725282440188320"
+      },
+      {
+        "file": "tests/fixtures/runtime/loading-spinner-surface.json",
+        "hash": "7991185185857229866"
+      },
+      {
+        "file": "tests/fixtures/runtime/slot-machine-surface.json",
+        "hash": "1797451531803689346"
+      },
+      {
+        "file": "tools/scripts/init-storage.ts",
+        "hash": "3708522391371012247"
+      },
+      {
+        "file": "tools/scripts/seed-manifests.ts",
+        "hash": "3948888761931246745"
+      },
+      {
+        "file": "tools/scripts/validate-setup.ts",
+        "hash": "14926017277260773675"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "16778830908452465109"
+      }
+    ]
+  }
+}

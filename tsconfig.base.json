@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "importHelpers": true,
+    "baseUrl": ".",
+    "paths": {
+      "@astralismotion/rive-components": ["libs/rive-components/src/index.ts"],
+      "@astralismotion/motion-scenes": ["libs/motion-scenes/src/index.ts"],
+      "@astralismotion/motion-specs": ["libs/motion-specs/src/index.ts"],
+      "@astralismotion/rive-manifests": ["libs/rive-manifests/src/index.ts"],
+      "@astralismotion/motion-utils": ["libs/motion-utils/src/index.ts"],
+      "@astralismotion/design-tokens": ["libs/design-tokens/src/index.ts"],
+      "@astralismotion/motion-qa": ["libs/motion-qa/src/index.ts"],
+      "@astralismotion/types": ["libs/types/src/index.ts"],
+      "@astralismotion/mcp-server": ["packages/mcp-server/src/index.ts"],
+      "@astralismotion/mcp-agents": ["packages/mcp-agents/index.ts"],
+      "@astralismotion/telemetry-service": ["packages/telemetry-service/src/index.ts"],
+      "@astralismotion/scene-composer": ["packages/scene-composer/src/index.ts"],
+      "@astralismotion/rive-synth": ["packages/rive-synth/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "tmp"]
+}

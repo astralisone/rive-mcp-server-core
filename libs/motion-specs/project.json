@@ -1,0 +1,33 @@
+{
+  "name": "motion-specs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/motion-specs/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:motion"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/motion-specs/dist",
+        "main": "libs/motion-specs/src/index.ts",
+        "tsConfig": "libs/motion-specs/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/motion-specs"],
+      "options": {
+        "jestConfig": "libs/motion-specs/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p libs/motion-specs/tsconfig.json"
+      }
+    }
+  }
+}

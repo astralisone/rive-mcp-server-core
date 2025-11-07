@@ -1,0 +1,33 @@
+{
+  "name": "design-tokens",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/design-tokens/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:design"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/design-tokens/dist",
+        "main": "libs/design-tokens/src/index.ts",
+        "tsConfig": "libs/design-tokens/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/design-tokens"],
+      "options": {
+        "jestConfig": "libs/design-tokens/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p libs/design-tokens/tsconfig.json"
+      }
+    }
+  }
+}

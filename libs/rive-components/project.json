@@ -1,0 +1,33 @@
+{
+  "name": "rive-components",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/rive-components/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:rive"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/rive-components/dist",
+        "main": "libs/rive-components/src/index.ts",
+        "tsConfig": "libs/rive-components/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/rive-components"],
+      "options": {
+        "jestConfig": "libs/rive-components/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p libs/rive-components/tsconfig.json"
+      }
+    }
+  }
+}

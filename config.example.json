@@ -1,0 +1,42 @@
+{
+  "storage": {
+    "backend": "local",
+    "local": {
+      "basePath": "./data",
+      "manifestPath": "manifests",
+      "assetsPath": "assets",
+      "cachePath": ".cache"
+    }
+  },
+  "runtime": {
+    "version": "latest",
+    "canvas": {
+      "antialias": true,
+      "powerPreference": "default",
+      "premultipliedAlpha": true
+    },
+    "performance": {
+      "maxInstances": 100,
+      "enableCaching": true,
+      "cacheSize": 52428800
+    }
+  },
+  "indexing": {
+    "autoIndex": true,
+    "indexInterval": 60000,
+    "scanDepth": 10,
+    "includePatterns": ["**/*.riv"],
+    "excludePatterns": ["**/node_modules/**", "**/.git/**"],
+    "enableCache": true,
+    "cacheTTL": 300
+  },
+  "server": {
+    "name": "astralismotion-rive-mcp",
+    "version": "0.1.0",
+    "port": 3000
+  },
+  "logging": {
+    "level": "info",
+    "format": "text"
+  }
+}

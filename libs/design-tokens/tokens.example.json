@@ -1,0 +1,28 @@
+{
+  "brand": "AstralisOne",
+  "color": {
+    "bg": {
+      "default": "#050814",
+      "surface": "#0B1020"
+    },
+    "accent": {
+      "primary": "#F9D976",
+      "secondary": "#61DAFB"
+    }
+  },
+  "radius": {
+    "s": 4,
+    "m": 8,
+    "l": 16
+  },
+  "motion": {
+    "duration": {
+      "fast": "120ms",
+      "base": "220ms",
+      "slow": "400ms"
+    },
+    "easing": {
+      "standard": "cubic-bezier(0.25, 0.1, 0.25, 1)"
+    }
+  }
+}

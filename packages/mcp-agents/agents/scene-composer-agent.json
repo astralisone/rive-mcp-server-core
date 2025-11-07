@@ -1,0 +1,10 @@
+{
+  "name": "scene-composer-agent",
+  "description": "Builds orchestrated scenes from multiple Rive components.",
+  "uses_tools": [
+    "compose_scene"
+  ],
+  "writes": [
+    "libs/motion-scenes"
+  ]
+}

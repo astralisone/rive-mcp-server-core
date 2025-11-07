@@ -1,0 +1,33 @@
+{
+  "name": "telemetry-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/telemetry-service/src",
+  "projectType": "library",
+  "tags": ["type:package", "scope:telemetry"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/telemetry-service/dist",
+        "main": "packages/telemetry-service/src/index.ts",
+        "tsConfig": "packages/telemetry-service/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/telemetry-service"],
+      "options": {
+        "jestConfig": "packages/telemetry-service/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/telemetry-service/tsconfig.json"
+      }
+    }
+  }
+}

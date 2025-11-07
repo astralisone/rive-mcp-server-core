@@ -1,0 +1,33 @@
+{
+  "name": "motion-scenes",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/motion-scenes/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:motion"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/motion-scenes/dist",
+        "main": "libs/motion-scenes/src/index.ts",
+        "tsConfig": "libs/motion-scenes/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/motion-scenes"],
+      "options": {
+        "jestConfig": "libs/motion-scenes/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p libs/motion-scenes/tsconfig.json"
+      }
+    }
+  }
+}

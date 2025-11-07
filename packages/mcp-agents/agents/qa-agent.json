@@ -1,0 +1,10 @@
+{
+  "name": "qa-agent",
+  "description": "Validates wrappers and scenes against runtime surfaces and QA rules.",
+  "uses_tools": [
+    "get_runtime_surface"
+  ],
+  "writes": [
+    "libs/motion-qa"
+  ]
+}

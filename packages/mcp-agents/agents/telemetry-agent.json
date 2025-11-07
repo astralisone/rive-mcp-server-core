@@ -1,0 +1,8 @@
+{
+  "name": "telemetry-agent",
+  "description": "Analyzes collected metrics to optimize motion behavior.",
+  "uses_tools": [
+    "analyze_performance"
+  ],
+  "writes": []
+}

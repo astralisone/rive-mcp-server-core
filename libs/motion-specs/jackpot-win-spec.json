@@ -1,0 +1,36 @@
+{
+  "id": "jackpot-win",
+  "name": "Jackpot Win Experience",
+  "purpose": "Celebrate a major win in the AstralisWins slot machine.",
+  "inputs": [
+    {
+      "name": "winAmount",
+      "type": "number",
+      "description": "Winning amount to display."
+    }
+  ],
+  "events": [
+    {
+      "name": "WinSequenceComplete",
+      "description": "Fires when the jackpot animation finishes."
+    }
+  ],
+  "visualGuidelines": {
+    "brand": "AstralisWins",
+    "palette": [
+      "#050814",
+      "#F9D976",
+      "#61DAFB"
+    ],
+    "notes": "High-tech, premium, no kitsch."
+  },
+  "motionGuidelines": {
+    "duration": "1.6s",
+    "easing": "cubic-bezier(0.33, 1, 0.68, 1)",
+    "styleKeywords": [
+      "cinematic",
+      "crisp",
+      "responsive"
+    ]
+  }
+}

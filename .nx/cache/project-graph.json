@@ -1,0 +1,1428 @@
+{
+  "nodes": {
+    "telemetry-service": {
+      "name": "telemetry-service",
+      "type": "lib",
+      "data": {
+        "root": "packages/telemetry-service",
+        "name": "telemetry-service",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "packages/telemetry-service/dist",
+              "main": "packages/telemetry-service/src/index.ts",
+              "tsConfig": "packages/telemetry-service/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "dev"
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/packages/telemetry-service"
+            ],
+            "options": {
+              "jestConfig": "packages/telemetry-service/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "cache": true,
+            "options": {
+              "script": "lint"
+            },
+            "configurations": {}
+          },
+          "clean": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "clean"
+            },
+            "configurations": {}
+          },
+          "nx-release-publish": {
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "executor": "@nx/js:release-publish",
+            "options": {},
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p packages/telemetry-service/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "sourceRoot": "packages/telemetry-service/src",
+        "projectType": "library",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "tags": [
+          "type:package",
+          "scope:telemetry"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "scene-composer": {
+      "name": "scene-composer",
+      "type": "lib",
+      "data": {
+        "root": "packages/scene-composer",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "packages/scene-composer/dist",
+              "main": "packages/scene-composer/src/index.ts",
+              "tsConfig": "packages/scene-composer/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/packages/scene-composer"
+            ],
+            "options": {
+              "jestConfig": "packages/scene-composer/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p packages/scene-composer/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "scene-composer",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "packages/scene-composer/src",
+        "projectType": "library",
+        "tags": [
+          "type:package",
+          "scope:scene"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "rive-components": {
+      "name": "rive-components",
+      "type": "lib",
+      "data": {
+        "root": "libs/rive-components",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/rive-components/dist",
+              "main": "libs/rive-components/src/index.ts",
+              "tsConfig": "libs/rive-components/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/rive-components"
+            ],
+            "options": {
+              "jestConfig": "libs/rive-components/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/rive-components/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "rive-components",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/rive-components/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:rive"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "mcp-agents": {
+      "name": "mcp-agents",
+      "type": "lib",
+      "data": {
+        "root": "packages/mcp-agents",
+        "name": "mcp-agents",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "packages/mcp-agents/dist",
+              "main": "packages/mcp-agents/index.ts",
+              "tsConfig": "packages/mcp-agents/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "dev"
+            },
+            "configurations": {}
+          },
+          "cli": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "cli"
+            },
+            "configurations": {}
+          },
+          "api": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "api"
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/packages/mcp-agents"
+            ],
+            "options": {
+              "jestConfig": "packages/mcp-agents/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "cache": true,
+            "options": {
+              "script": "lint"
+            },
+            "configurations": {}
+          },
+          "format": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "format"
+            },
+            "configurations": {}
+          },
+          "nx-release-publish": {
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "executor": "@nx/js:release-publish",
+            "options": {},
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p packages/mcp-agents/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "sourceRoot": "packages/mcp-agents/agents",
+        "projectType": "library",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "tags": [
+          "type:package",
+          "scope:mcp"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "mcp-server": {
+      "name": "mcp-server",
+      "type": "lib",
+      "data": {
+        "root": "packages/mcp-server",
+        "name": "mcp-server",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "packages/mcp-server/dist",
+              "main": "packages/mcp-server/src/index.ts",
+              "tsConfig": "packages/mcp-server/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "dev"
+            },
+            "configurations": {}
+          },
+          "start": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "start"
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/packages/mcp-server"
+            ],
+            "options": {
+              "jestConfig": "packages/mcp-server/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "cache": true,
+            "options": {
+              "script": "lint"
+            },
+            "configurations": {}
+          },
+          "clean": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "clean"
+            },
+            "configurations": {}
+          },
+          "nx-release-publish": {
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "executor": "@nx/js:release-publish",
+            "options": {},
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p packages/mcp-server/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "sourceRoot": "packages/mcp-server/src",
+        "projectType": "library",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "tags": [
+          "type:package",
+          "scope:mcp"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "rive-manifests": {
+      "name": "rive-manifests",
+      "type": "lib",
+      "data": {
+        "root": "libs/rive-manifests",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/rive-manifests/dist",
+              "main": "libs/rive-manifests/src/index.ts",
+              "tsConfig": "libs/rive-manifests/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/rive-manifests"
+            ],
+            "options": {
+              "jestConfig": "libs/rive-manifests/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/rive-manifests/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "rive-manifests",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/rive-manifests/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:rive"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "rive-synth": {
+      "name": "rive-synth",
+      "type": "lib",
+      "data": {
+        "root": "packages/rive-synth",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "packages/rive-synth/dist",
+              "main": "packages/rive-synth/src/index.ts",
+              "tsConfig": "packages/rive-synth/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/packages/rive-synth"
+            ],
+            "options": {
+              "jestConfig": "packages/rive-synth/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p packages/rive-synth/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "rive-synth",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "packages/rive-synth/src",
+        "projectType": "library",
+        "tags": [
+          "type:package",
+          "scope:rive"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "design-tokens": {
+      "name": "design-tokens",
+      "type": "lib",
+      "data": {
+        "root": "libs/design-tokens",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/design-tokens/dist",
+              "main": "libs/design-tokens/src/index.ts",
+              "tsConfig": "libs/design-tokens/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/design-tokens"
+            ],
+            "options": {
+              "jestConfig": "libs/design-tokens/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/design-tokens/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "design-tokens",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/design-tokens/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:design"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "motion-scenes": {
+      "name": "motion-scenes",
+      "type": "lib",
+      "data": {
+        "root": "libs/motion-scenes",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/motion-scenes/dist",
+              "main": "libs/motion-scenes/src/index.ts",
+              "tsConfig": "libs/motion-scenes/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/motion-scenes"
+            ],
+            "options": {
+              "jestConfig": "libs/motion-scenes/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/motion-scenes/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "motion-scenes",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/motion-scenes/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:motion"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "motion-specs": {
+      "name": "motion-specs",
+      "type": "lib",
+      "data": {
+        "root": "libs/motion-specs",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/motion-specs/dist",
+              "main": "libs/motion-specs/src/index.ts",
+              "tsConfig": "libs/motion-specs/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/motion-specs"
+            ],
+            "options": {
+              "jestConfig": "libs/motion-specs/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/motion-specs/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "motion-specs",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/motion-specs/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:motion"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "motion-utils": {
+      "name": "motion-utils",
+      "type": "lib",
+      "data": {
+        "root": "libs/motion-utils",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/motion-utils/dist",
+              "main": "libs/motion-utils/src/index.ts",
+              "tsConfig": "libs/motion-utils/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/motion-utils"
+            ],
+            "options": {
+              "jestConfig": "libs/motion-utils/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/motion-utils/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "motion-utils",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/motion-utils/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:motion"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "dashboard": {
+      "name": "dashboard",
+      "type": "app",
+      "data": {
+        "root": "apps/dashboard",
+        "targets": {
+          "build": {
+            "executor": "@nx/webpack:webpack",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+              "outputPath": "apps/dashboard/dist",
+              "index": "apps/dashboard/src/index.html",
+              "main": "apps/dashboard/src/main.tsx",
+              "tsConfig": "apps/dashboard/tsconfig.json",
+              "assets": [
+                "apps/dashboard/src/assets"
+              ],
+              "styles": [
+                "apps/dashboard/src/styles.css"
+              ],
+              "webpackConfig": "apps/dashboard/webpack.config.js"
+            },
+            "configurations": {
+              "development": {
+                "extractLicenses": false,
+                "optimization": false,
+                "sourceMap": true,
+                "vendorChunk": true
+              },
+              "production": {
+                "optimization": true,
+                "outputHashing": "all",
+                "sourceMap": false,
+                "namedChunks": false,
+                "extractLicenses": true,
+                "vendorChunk": false
+              }
+            }
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/apps/dashboard"
+            ],
+            "options": {
+              "jestConfig": "apps/dashboard/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "serve": {
+            "executor": "@nx/webpack:dev-server",
+            "dependsOn": [
+              "build"
+            ],
+            "cache": false,
+            "defaultConfiguration": "development",
+            "options": {
+              "buildTarget": "dashboard:build",
+              "port": 3002
+            },
+            "configurations": {
+              "development": {
+                "buildTarget": "dashboard:build:development"
+              },
+              "production": {
+                "buildTarget": "dashboard:build:production",
+                "hmr": false
+              }
+            }
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p apps/dashboard/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "dashboard",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/dashboard/src",
+        "projectType": "application",
+        "tags": [
+          "type:app",
+          "scope:frontend"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "motion-qa": {
+      "name": "motion-qa",
+      "type": "lib",
+      "data": {
+        "root": "libs/motion-qa",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/motion-qa/dist",
+              "main": "libs/motion-qa/src/index.ts",
+              "tsConfig": "libs/motion-qa/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/motion-qa"
+            ],
+            "options": {
+              "jestConfig": "libs/motion-qa/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/motion-qa/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "motion-qa",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/motion-qa/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:qa"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "types": {
+      "name": "types",
+      "type": "lib",
+      "data": {
+        "root": "libs/types",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "libs/types/dist",
+              "main": "libs/types/src/index.ts",
+              "tsConfig": "libs/types/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/libs/types"
+            ],
+            "options": {
+              "jestConfig": "libs/types/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p libs/types/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "types",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/types/src",
+        "projectType": "library",
+        "tags": [
+          "type:lib",
+          "scope:shared"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "demo": {
+      "name": "demo",
+      "type": "app",
+      "data": {
+        "root": "apps/demo",
+        "targets": {
+          "build": {
+            "executor": "@nx/webpack:webpack",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+              "outputPath": "apps/demo/dist",
+              "index": "apps/demo/src/index.html",
+              "main": "apps/demo/src/main.tsx",
+              "tsConfig": "apps/demo/tsconfig.json",
+              "assets": [
+                "apps/demo/src/assets"
+              ],
+              "styles": [
+                "apps/demo/src/styles.css"
+              ],
+              "webpackConfig": "apps/demo/webpack.config.js"
+            },
+            "configurations": {
+              "development": {
+                "extractLicenses": false,
+                "optimization": false,
+                "sourceMap": true,
+                "vendorChunk": true
+              },
+              "production": {
+                "optimization": true,
+                "outputHashing": "all",
+                "sourceMap": false,
+                "namedChunks": false,
+                "extractLicenses": true,
+                "vendorChunk": false
+              }
+            }
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/apps/demo"
+            ],
+            "options": {
+              "jestConfig": "apps/demo/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "serve": {
+            "executor": "@nx/webpack:dev-server",
+            "dependsOn": [
+              "build"
+            ],
+            "cache": false,
+            "defaultConfiguration": "development",
+            "options": {
+              "buildTarget": "demo:build",
+              "port": 3001
+            },
+            "configurations": {
+              "development": {
+                "buildTarget": "demo:build:development"
+              },
+              "production": {
+                "buildTarget": "demo:build:production",
+                "hmr": false
+              }
+            }
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p apps/demo/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "demo",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/demo/src",
+        "projectType": "application",
+        "tags": [
+          "type:app",
+          "scope:frontend"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "cli": {
+      "name": "cli",
+      "type": "app",
+      "data": {
+        "root": "apps/cli",
+        "targets": {
+          "build": {
+            "executor": "@nx/js:tsc",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "options": {
+              "outputPath": "apps/cli/dist",
+              "main": "apps/cli/src/main.ts",
+              "tsConfig": "apps/cli/tsconfig.json",
+              "assets": []
+            },
+            "configurations": {}
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/apps/cli"
+            ],
+            "options": {
+              "jestConfig": "apps/cli/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "serve": {
+            "executor": "nx:run-commands",
+            "dependsOn": [
+              "build"
+            ],
+            "cache": false,
+            "options": {
+              "command": "node apps/cli/dist/main.js"
+            },
+            "configurations": {}
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p apps/cli/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "cli",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/cli/src",
+        "projectType": "application",
+        "tags": [
+          "type:app",
+          "scope:cli"
+        ],
+        "implicitDependencies": []
+      }
+    },
+    "web": {
+      "name": "web",
+      "type": "app",
+      "data": {
+        "root": "apps/web",
+        "targets": {
+          "build": {
+            "executor": "@nx/webpack:webpack",
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
+            "cache": true,
+            "outputs": [
+              "{options.outputPath}"
+            ],
+            "defaultConfiguration": "production",
+            "options": {
+              "outputPath": "apps/web/dist",
+              "index": "apps/web/src/index.html",
+              "main": "apps/web/src/main.tsx",
+              "tsConfig": "apps/web/tsconfig.json",
+              "assets": [
+                "apps/web/src/assets"
+              ],
+              "styles": [
+                "apps/web/src/styles.css"
+              ],
+              "webpackConfig": "apps/web/webpack.config.js"
+            },
+            "configurations": {
+              "development": {
+                "extractLicenses": false,
+                "optimization": false,
+                "sourceMap": true,
+                "vendorChunk": true
+              },
+              "production": {
+                "fileReplacements": [
+                  {
+                    "replace": "apps/web/src/environments/environment.ts",
+                    "with": "apps/web/src/environments/environment.prod.ts"
+                  }
+                ],
+                "optimization": true,
+                "outputHashing": "all",
+                "sourceMap": false,
+                "namedChunks": false,
+                "extractLicenses": true,
+                "vendorChunk": false
+              }
+            }
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "cache": true,
+            "outputs": [
+              "{workspaceRoot}/coverage/apps/web"
+            ],
+            "options": {
+              "jestConfig": "apps/web/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "serve": {
+            "executor": "@nx/webpack:dev-server",
+            "dependsOn": [
+              "build"
+            ],
+            "cache": false,
+            "defaultConfiguration": "development",
+            "options": {
+              "buildTarget": "web:build",
+              "port": 3000
+            },
+            "configurations": {
+              "development": {
+                "buildTarget": "web:build:development"
+              },
+              "production": {
+                "buildTarget": "web:build:production",
+                "hmr": false
+              }
+            }
+          },
+          "typecheck": {
+            "executor": "nx:run-commands",
+            "inputs": [
+              "default",
+              "^production"
+            ],
+            "cache": true,
+            "options": {
+              "command": "tsc --noEmit -p apps/web/tsconfig.json"
+            },
+            "configurations": {}
+          }
+        },
+        "name": "web",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "apps/web/src",
+        "projectType": "application",
+        "tags": [
+          "type:app",
+          "scope:frontend"
+        ],
+        "implicitDependencies": []
+      }
+    }
+  },
+  "externalNodes": {},
+  "dependencies": {
+    "telemetry-service": [
+      {
+        "source": "telemetry-service",
+        "target": "types",
+        "type": "static"
+      }
+    ],
+    "scene-composer": [],
+    "rive-components": [],
+    "mcp-agents": [],
+    "mcp-server": [
+      {
+        "source": "mcp-server",
+        "target": "types",
+        "type": "static"
+      },
+      {
+        "source": "mcp-server",
+        "target": "scene-composer",
+        "type": "static"
+      }
+    ],
+    "rive-manifests": [],
+    "rive-synth": [],
+    "design-tokens": [],
+    "motion-scenes": [],
+    "motion-specs": [],
+    "motion-utils": [],
+    "dashboard": [],
+    "motion-qa": [],
+    "types": [],
+    "demo": [],
+    "cli": [],
+    "web": []
+  },
+  "version": "6.0"
+}

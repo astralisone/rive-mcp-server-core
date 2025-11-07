@@ -1,0 +1,33 @@
+{
+  "name": "motion-qa",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/motion-qa/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:qa"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/motion-qa/dist",
+        "main": "libs/motion-qa/src/index.ts",
+        "tsConfig": "libs/motion-qa/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/motion-qa"],
+      "options": {
+        "jestConfig": "libs/motion-qa/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p libs/motion-qa/tsconfig.json"
+      }
+    }
+  }
+}

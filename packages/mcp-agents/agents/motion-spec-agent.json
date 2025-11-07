@@ -1,0 +1,11 @@
+{
+  "name": "motion-spec-agent",
+  "description": "Converts UX/product descriptions into CreationSpec documents.",
+  "uses_tools": [
+    "list_libraries",
+    "list_components"
+  ],
+  "writes": [
+    "libs/motion-specs"
+  ]
+}

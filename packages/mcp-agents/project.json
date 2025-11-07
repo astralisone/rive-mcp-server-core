@@ -1,0 +1,33 @@
+{
+  "name": "mcp-agents",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/mcp-agents/agents",
+  "projectType": "library",
+  "tags": ["type:package", "scope:mcp"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/mcp-agents/dist",
+        "main": "packages/mcp-agents/index.ts",
+        "tsConfig": "packages/mcp-agents/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/mcp-agents"],
+      "options": {
+        "jestConfig": "packages/mcp-agents/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/mcp-agents/tsconfig.json"
+      }
+    }
+  }
+}

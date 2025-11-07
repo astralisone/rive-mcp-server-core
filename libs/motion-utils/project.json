@@ -1,0 +1,33 @@
+{
+  "name": "motion-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/motion-utils/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:motion"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/motion-utils/dist",
+        "main": "libs/motion-utils/src/index.ts",
+        "tsConfig": "libs/motion-utils/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/motion-utils"],
+      "options": {
+        "jestConfig": "libs/motion-utils/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p libs/motion-utils/tsconfig.json"
+      }
+    }
+  }
+}

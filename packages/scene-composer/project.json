@@ -1,0 +1,33 @@
+{
+  "name": "scene-composer",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/scene-composer/src",
+  "projectType": "library",
+  "tags": ["type:package", "scope:scene"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/scene-composer/dist",
+        "main": "packages/scene-composer/src/index.ts",
+        "tsConfig": "packages/scene-composer/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/scene-composer"],
+      "options": {
+        "jestConfig": "packages/scene-composer/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/scene-composer/tsconfig.json"
+      }
+    }
+  }
+}

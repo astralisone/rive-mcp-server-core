@@ -1,0 +1,33 @@
+{
+  "name": "mcp-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/mcp-server/src",
+  "projectType": "library",
+  "tags": ["type:package", "scope:mcp"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/mcp-server/dist",
+        "main": "packages/mcp-server/src/index.ts",
+        "tsConfig": "packages/mcp-server/tsconfig.json",
+        "assets": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/packages/mcp-server"],
+      "options": {
+        "jestConfig": "packages/mcp-server/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/mcp-server/tsconfig.json"
+      }
+    }
+  }
+}
