@@ -91,27 +91,25 @@ async function seedManifests(options: SeedOptions = {}): Promise<void> {
 }
 
 // CLI execution
-if (require.main === module) {
-  const args = process.argv.slice(2);
-  const options: SeedOptions = {
-    verbose: !args.includes('--quiet'),
-  };
+const args = process.argv.slice(2);
+const options: SeedOptions = {
+  verbose: !args.includes('--quiet'),
+};
 
-  // Parse arguments
-  const basePathIndex = args.indexOf('--base-path');
-  if (basePathIndex !== -1 && args[basePathIndex + 1]) {
-    options.basePath = args[basePathIndex + 1];
-  }
-
-  const examplesPathIndex = args.indexOf('--examples-path');
-  if (examplesPathIndex !== -1 && args[examplesPathIndex + 1]) {
-    options.examplesPath = args[examplesPathIndex + 1];
-  }
-
-  seedManifests(options).catch((error) => {
-    console.error('\n❌ Manifest seeding failed:', error);
-    process.exit(1);
-  });
+// Parse arguments
+const basePathIndex = args.indexOf('--base-path');
+if (basePathIndex !== -1 && args[basePathIndex + 1]) {
+  options.basePath = args[basePathIndex + 1];
 }
+
+const examplesPathIndex = args.indexOf('--examples-path');
+if (examplesPathIndex !== -1 && args[examplesPathIndex + 1]) {
+  options.examplesPath = args[examplesPathIndex + 1];
+}
+
+seedManifests(options).catch((error) => {
+  console.error('\n❌ Manifest seeding failed:', error);
+  process.exit(1);
+});
 
 export { seedManifests };

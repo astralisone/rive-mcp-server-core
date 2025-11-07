@@ -86,7 +86,7 @@ export class MCPClient {
       ]);
 
       if ('error' in result) {
-        throw new Error(result.error);
+        throw new Error(String(result.error));
       }
 
       return result.content as T;

@@ -47,14 +47,13 @@ export function createFullComponentWorkflow(config: {
       id: 'compose-scene',
       agentName: 'scene-composer-agent',
       inputs: {
-        sceneName: config.sceneName,
         components: [
           {
             id: '$componentId',
           },
         ],
         layout: 'flex',
-      },
+      } as any,
       outputs: ['scene', 'scenePath'],
       dependsOn: ['generate-wrapper'],
     });
@@ -66,10 +65,9 @@ export function createFullComponentWorkflow(config: {
       id: 'qa-wrapper',
       agentName: 'qa-agent',
       inputs: {
-        targetType: 'wrapper',
         targetId: '$componentId',
         targetPath: '$componentPath',
-      },
+      } as any,
       outputs: ['validation'],
       dependsOn: config.sceneName ? ['compose-scene'] : ['generate-wrapper'],
     });
@@ -206,13 +204,12 @@ export function createMultiFrameworkWorkflow(config: {
         id: `qa-${framework}`,
         agentName: 'qa-agent',
         inputs: {
-          targetType: 'wrapper',
           targetId: `${config.componentId}-${framework}`,
           targetPath: `$path-${framework}`,
-        },
+        } as any,
         outputs: [`validation-${framework}`],
         dependsOn: [`generate-${framework}-wrapper`],
-      });
+      } as any);
     });
   }
 

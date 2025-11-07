@@ -164,27 +164,25 @@ async function validateSetup(options: ValidateOptions = {}): Promise<void> {
 }
 
 // CLI execution
-if (require.main === module) {
-  const args = process.argv.slice(2);
-  const options: ValidateOptions = {
-    verbose: !args.includes('--quiet'),
-  };
+const args = process.argv.slice(2);
+const options: ValidateOptions = {
+  verbose: !args.includes('--quiet'),
+};
 
-  // Parse arguments
-  const basePathIndex = args.indexOf('--base-path');
-  if (basePathIndex !== -1 && args[basePathIndex + 1]) {
-    options.basePath = args[basePathIndex + 1];
-  }
-
-  const configPathIndex = args.indexOf('--config');
-  if (configPathIndex !== -1 && args[configPathIndex + 1]) {
-    options.configPath = args[configPathIndex + 1];
-  }
-
-  validateSetup(options).catch((error) => {
-    console.error('\n❌ Validation failed with error:', error);
-    process.exit(1);
-  });
+// Parse arguments
+const basePathIndex = args.indexOf('--base-path');
+if (basePathIndex !== -1 && args[basePathIndex + 1]) {
+  options.basePath = args[basePathIndex + 1];
 }
+
+const configPathIndex = args.indexOf('--config');
+if (configPathIndex !== -1 && args[configPathIndex + 1]) {
+  options.configPath = args[configPathIndex + 1];
+}
+
+validateSetup(options).catch((error) => {
+  console.error('\n❌ Validation failed with error:', error);
+  process.exit(1);
+});
 
 export { validateSetup };

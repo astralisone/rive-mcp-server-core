@@ -97,22 +97,20 @@ async function initStorage(options: InitOptions = {}): Promise<void> {
 }
 
 // CLI execution
-if (require.main === module) {
-  const args = process.argv.slice(2);
-  const options: InitOptions = {
-    verbose: !args.includes('--quiet'),
-  };
+const args = process.argv.slice(2);
+const options: InitOptions = {
+  verbose: !args.includes('--quiet'),
+};
 
-  // Parse --base-path argument
-  const basePathIndex = args.indexOf('--base-path');
-  if (basePathIndex !== -1 && args[basePathIndex + 1]) {
-    options.basePath = args[basePathIndex + 1];
-  }
-
-  initStorage(options).catch((error) => {
-    console.error('\n❌ Storage initialization failed:', error);
-    process.exit(1);
-  });
+// Parse --base-path argument
+const basePathIndex = args.indexOf('--base-path');
+if (basePathIndex !== -1 && args[basePathIndex + 1]) {
+  options.basePath = args[basePathIndex + 1];
 }
+
+initStorage(options).catch((error) => {
+  console.error('\n❌ Storage initialization failed:', error);
+  process.exit(1);
+});
 
 export { initStorage };

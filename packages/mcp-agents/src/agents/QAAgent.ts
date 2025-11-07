@@ -100,7 +100,7 @@ export class QAAgent extends BaseAgent {
       }
 
       // Run validation
-      const validation = await this.validate(
+      const validation = await this.validateTarget(
         qaInput.targetType,
         qaInput.targetId,
         target,
@@ -204,7 +204,7 @@ export class QAAgent extends BaseAgent {
   /**
    * Validate target against rules
    */
-  private async validate(
+  private async validateTarget(
     targetType: string,
     targetId: string,
     target: any,

@@ -1,0 +1,90 @@
+{
+  "id": "ui-interactive-button",
+  "name": "Interactive Button",
+  "description": "A highly interactive button with hover, press, and disabled states",
+  "version": "2.0.0",
+  "libraryId": "ui-components",
+  "riveFile": "/rive/ui/interactive-button.riv",
+  "thumbnailUrl": "https://cdn.astralis.com/thumbnails/button.png",
+  "previewUrl": "https://cdn.astralis.com/previews/button.mp4",
+  "tags": ["ui", "button", "interactive", "animation"],
+  "category": "ui-elements",
+  "author": "UI Team",
+  "createdAt": "2024-12-01T09:00:00Z",
+  "updatedAt": "2025-01-18T16:20:00Z",
+  "stateMachines": [
+    {
+      "name": "ButtonStateMachine",
+      "description": "Interactive button state machine with all button states",
+      "inputs": [
+        {
+          "name": "isHovered",
+          "type": "bool",
+          "defaultValue": false,
+          "description": "True when mouse is hovering over button"
+        },
+        {
+          "name": "isPressed",
+          "type": "bool",
+          "defaultValue": false,
+          "description": "True when button is being pressed"
+        },
+        {
+          "name": "isDisabled",
+          "type": "bool",
+          "defaultValue": false,
+          "description": "Disables button interaction"
+        },
+        {
+          "name": "variant",
+          "type": "number",
+          "defaultValue": 0,
+          "min": 0,
+          "max": 3,
+          "description": "Button variant (0: primary, 1: secondary, 2: danger, 3: success)"
+        },
+        {
+          "name": "onClick",
+          "type": "trigger",
+          "description": "Triggers click animation and feedback"
+        }
+      ],
+      "events": [
+        {
+          "name": "ButtonClicked",
+          "description": "Fired when button click animation completes",
+          "eventType": "interaction"
+        },
+        {
+          "name": "HoverEnter",
+          "description": "Fired when hover state begins",
+          "eventType": "interaction"
+        },
+        {
+          "name": "HoverExit",
+          "description": "Fired when hover state ends",
+          "eventType": "interaction"
+        }
+      ]
+    }
+  ],
+  "artboards": ["Button"],
+  "dataBindings": [
+    {
+      "name": "buttonText",
+      "type": "text",
+      "description": "Text label to display on the button",
+      "required": false
+    },
+    {
+      "name": "iconUrl",
+      "type": "image",
+      "description": "Optional icon image to display",
+      "required": false
+    }
+  ],
+  "recommendedFrameworks": ["react", "vue", "stencil", "angular", "svelte"],
+  "runtimeVersion": "web-v2",
+  "storageBackend": "local",
+  "storagePath": "components/ui/interactive-button"
+}

@@ -11,9 +11,8 @@ import type {
   EventConnection,
   SceneState,
   Transition,
-} from '../../../scene-composer/src/types/scene-spec';
-import { validateScene } from '../../../scene-composer/src/validation/scene-validator';
-import { generateRuntimeCode } from '../../../scene-composer/src/codegen/runtime-generator';
+} from '@astralismotion/scene-composer';
+import { validateScene, generateRuntimeCode } from '@astralismotion/scene-composer';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
