@@ -233,6 +233,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       status: result.status || 'unknown'
     });
 
+    // Use formatted response if available, otherwise fallback to JSON
+    if (result.formatted) {
+      return result.formatted;
+    }
+
     return {
       content: [
         {

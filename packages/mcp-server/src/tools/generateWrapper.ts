@@ -10,6 +10,7 @@ import {
 } from "../generators";
 import { toPascalCase } from "../generators/utils";
 import { logger } from "../utils/logger";
+import { validateRuntimeSurface, validateFilePath } from "../utils/validation";
 
 export interface GenerateWrapperParams {
   surface: RuntimeSurface;
@@ -43,22 +44,37 @@ export async function generateWrapper(params: GenerateWrapperParams): Promise<an
     writeToFile
   });
 
-  // Validate surface
-  if (!surface || !surface.componentId) {
-    logger.warn('generateWrapper called with invalid surface: missing componentId');
-    return {
-      status: "error",
-      message: "Invalid surface: componentId is required",
-    };
-  }
-
-  if (!surface.stateMachines || surface.stateMachines.length === 0) {
-    logger.warn('generateWrapper called with invalid surface: no state machines', {
-      componentId: surface.componentId
+  // Validate surface comprehensively
+  const validationResult = validateRuntimeSurface(surface);
+  if (!validationResult.valid) {
+    logger.warn('generateWrapper called with invalid surface', {
+      componentId: surface?.componentId,
+      errors: validationResult.errors
     });
     return {
       status: "error",
-      message: "Invalid surface: at least one state machine is required",
+      message: `Invalid runtime surface: ${validationResult.errors.join(', ')}`,
+      details: validationResult,
+    };
+  }
+
+  // Log warnings if any
+  if (validationResult.warnings && validationResult.warnings.length > 0) {
+    logger.warn('Runtime surface has warnings', {
+      componentId: surface.componentId,
+      warnings: validationResult.warnings
+    });
+  }
+
+  // Validate riveSrc path if provided
+  if (riveSrc && !validateFilePath(riveSrc)) {
+    logger.warn('generateWrapper called with invalid riveSrc path', {
+      componentId: surface.componentId,
+      riveSrc
+    });
+    return {
+      status: "error",
+      message: `Invalid Rive source path: ${riveSrc}. Path must end with .riv extension and not contain invalid characters.`,
     };
   }
 

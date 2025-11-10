@@ -52,10 +52,55 @@ export interface RiveArtboard {
   height: number;
 }
 
+/**
+ * Fit mode for Rive canvas rendering
+ * Determines how the animation scales within its container
+ */
+export type FitMode = 'cover' | 'contain' | 'fill' | 'fitWidth' | 'fitHeight' | 'none' | 'scaleDown';
+
+/**
+ * Alignment for Rive canvas within its container
+ */
+export type Alignment = 'center' | 'topLeft' | 'topCenter' | 'topRight' |
+                        'centerLeft' | 'centerRight' |
+                        'bottomLeft' | 'bottomCenter' | 'bottomRight';
+
+/**
+ * Layout configuration for Rive component rendering
+ */
+export interface LayoutConfig {
+  fit?: FitMode;
+  alignment?: Alignment;
+  autoResize?: boolean;
+}
+
+/**
+ * Playback state for Rive animation control
+ */
+export interface PlaybackState {
+  isPlaying: boolean;
+  currentTime?: number;
+  duration?: number;
+}
+
+/**
+ * Loading and error state tracking
+ */
+export interface LoadingState {
+  loading: boolean;
+  error?: Error;
+  progress?: number;
+}
+
+/**
+ * State machine definition with enhanced metadata
+ */
 export interface RiveStateMachine {
   name: string;
   inputs: RiveStateMachineInput[];
   layerCount: number;
+  inputCount?: number;
+  eventNames?: string[];
 }
 
 export interface RiveRuntimeSurface {
@@ -137,4 +182,11 @@ export interface MCPToolResponse<T = any> {
     details?: any;
   };
   timestamp: string;
+  formatted?: {
+    content: Array<{
+      type: 'text';
+      text: string;
+    }>;
+    isError?: boolean;
+  };
 }

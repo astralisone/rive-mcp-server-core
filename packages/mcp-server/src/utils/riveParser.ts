@@ -165,12 +165,35 @@ async function getRiveRuntime(): Promise<RiveCanvasType | null> {
 /**
  * Parse a Rive file and extract runtime surface information
  * This requires the Rive runtime to properly inspect the file
+ * Enhanced with better error messages and validation
  */
 export async function parseRiveFile(filePath: string): Promise<RiveRuntimeSurface> {
   try {
+    // Validate file path
+    if (!filePath) {
+      throw new Error('File path is required');
+    }
+
+    // Check if file exists
+    try {
+      await fs.access(filePath);
+    } catch (accessError) {
+      throw new Error(`File not found or not accessible: ${filePath}`);
+    }
+
     // Read the .riv file
     const fileBuffer = await fs.readFile(filePath);
     const fileStats = await fs.stat(filePath);
+
+    // Validate file size
+    if (fileStats.size === 0) {
+      throw new Error(`File is empty: ${filePath}`);
+    }
+
+    // Validate file extension
+    if (!filePath.endsWith('.riv')) {
+      console.warn(`File does not have .riv extension: ${filePath}`);
+    }
 
     // Use the actual Rive runtime to parse the file
     const runtimeSurface = await inspectRiveRuntime(fileBuffer, filePath);
@@ -184,7 +207,8 @@ export async function parseRiveFile(filePath: string): Promise<RiveRuntimeSurfac
       },
     };
   } catch (error) {
-    throw new Error(`Failed to parse Rive file at ${filePath}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`Failed to parse Rive file at ${filePath}: ${errorMessage}`);
   }
 }
 
@@ -257,6 +281,7 @@ async function extractArtboards(riveFile: File): Promise<RiveArtboard[]> {
 /**
  * Extract state machines, their inputs, and events from Rive file
  * Uses the Rive runtime to inspect all artboards and their state machines
+ * Enhanced to capture input counts, event names, and better metadata
  */
 async function extractStateMachinesAndEvents(
   riveFile: File,
@@ -271,12 +296,21 @@ async function extractStateMachinesAndEvents(
 
   const rive = await getRiveRuntime();
 
+  if (!rive) {
+    throw new Error('Rive runtime not initialized. Cannot extract state machines.');
+  }
+
   // Iterate through all artboards to collect state machines
   for (let artboardIndex = 0; artboardIndex < artboards.length; artboardIndex++) {
     const artboard = riveFile.artboardByIndex(artboardIndex);
 
     try {
       const stateMachineCount = artboard.stateMachineCount();
+
+      // Log state machine discovery for debugging
+      if (stateMachineCount === 0) {
+        console.warn(`Artboard '${artboards[artboardIndex].name}' has no state machines`);
+      }
 
       for (let smIndex = 0; smIndex < stateMachineCount; smIndex++) {
         const stateMachine = artboard.stateMachineByIndex(smIndex);
@@ -286,6 +320,7 @@ async function extractStateMachinesAndEvents(
           // Extract inputs from the state machine instance
           const inputs: RiveStateMachineInput[] = [];
           const inputCount = stateMachineInstance.inputCount();
+          const eventNamesForThisSM: string[] = [];
 
           for (let inputIndex = 0; inputIndex < inputCount; inputIndex++) {
             const input = stateMachineInstance.input(inputIndex);
@@ -300,6 +335,7 @@ async function extractStateMachinesAndEvents(
               inputType = 'trigger';
             } else {
               // Default to trigger for unknown types
+              console.warn(`Unknown input type for '${input.name}' in state machine '${stateMachine.name}', defaulting to trigger`);
               inputType = 'trigger';
             }
 
@@ -310,13 +346,6 @@ async function extractStateMachinesAndEvents(
             });
           }
 
-          // Add state machine info
-          stateMachines.push({
-            name: stateMachine.name,
-            inputs,
-            layerCount: 1, // Layer count is not directly exposed in the API
-          });
-
           // Extract events by advancing the state machine briefly
           // This is a heuristic approach - we advance the state machine to see if any events are reported
           stateMachineInstance.advance(0.016); // Advance by one frame (~16ms)
@@ -324,14 +353,37 @@ async function extractStateMachinesAndEvents(
 
           for (let eventIndex = 0; eventIndex < reportedEventCount; eventIndex++) {
             const event = stateMachineInstance.reportedEventAt(eventIndex);
-            if (event && !eventsSet.has(event.name)) {
-              eventsSet.add(event.name);
-              events.push({
-                name: event.name,
-                properties: event.properties || {},
-              });
+            if (event && event.name) {
+              eventNamesForThisSM.push(event.name);
+              if (!eventsSet.has(event.name)) {
+                eventsSet.add(event.name);
+                events.push({
+                  name: event.name,
+                  properties: event.properties || {},
+                });
+              }
             }
           }
+
+          // Get layer count from state machine if available
+          // Note: layerCount is not directly exposed in the Rive runtime API
+          // We default to 1 as a reasonable estimate
+          const layerCount = 1;
+
+          // Add state machine info with enhanced metadata
+          stateMachines.push({
+            name: stateMachine.name,
+            inputs,
+            layerCount,
+            inputCount, // Add explicit input count
+            eventNames: eventNamesForThisSM.length > 0 ? eventNamesForThisSM : undefined, // Add event names associated with this SM
+          });
+
+          console.log(`Extracted state machine '${stateMachine.name}' with ${inputCount} inputs and ${eventNamesForThisSM.length} events`);
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.error(`Error extracting state machine '${stateMachine.name}' from artboard '${artboards[artboardIndex].name}': ${errorMessage}`);
+          throw new Error(`Failed to extract state machine '${stateMachine.name}': ${errorMessage}`);
         } finally {
           // Clean up state machine instance
           if (stateMachineInstance && typeof stateMachineInstance.delete === 'function') {
@@ -339,12 +391,20 @@ async function extractStateMachinesAndEvents(
           }
         }
       }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`Error processing artboard '${artboards[artboardIndex].name}': ${errorMessage}`);
+      throw new Error(`Failed to process artboard '${artboards[artboardIndex].name}': ${errorMessage}`);
     } finally {
       // Clean up artboard instance
       if (artboard && typeof artboard.delete === 'function') {
         artboard.delete();
       }
     }
+  }
+
+  if (stateMachines.length === 0) {
+    console.warn('No state machines found in any artboard. This may indicate an empty or invalid Rive file.');
   }
 
   return { stateMachines, events };
