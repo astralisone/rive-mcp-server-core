@@ -39,20 +39,7 @@ data/
 └── .cache/
 ```
 
-### 3. Seed Example Data
-
-Populate your storage with example manifests:
-
-```bash
-npm run seed-manifests
-```
-
-This adds:
-- 4 example component manifests (slot machine, loading spinner, button, character avatar)
-- 2 library manifests (Astralis Casino, UI Components)
-- A populated manifest index
-
-### 4. Configure Environment
+### 3. Configure Environment
 
 Copy the example environment configuration:
 
@@ -69,7 +56,7 @@ LOCAL_BASE_PATH=./data
 NODE_ENV=development
 ```
 
-### 5. Validate Setup
+### 4. Validate Setup
 
 Verify everything is configured correctly:
 
@@ -79,7 +66,7 @@ npm run validate-setup
 
 You should see all validation checks pass.
 
-### 6. Start the MCP Server
+### 5. Start the MCP Server
 
 ```bash
 npm start
@@ -96,11 +83,13 @@ The Rive MCP Server exposes several tools for working with Rive components:
 ```typescript
 // MCP Tool: listComponents
 {
-  "libraryId": "astralis-casino",  // optional: filter by library
-  "tags": ["game"],                 // optional: filter by tags
-  "category": "game-elements"       // optional: filter by category
+  "libraryId": "{your-library-id}",  // optional: filter by library
+  "tags": ["game"],                   // optional: filter by tags
+  "category": "game-elements"         // optional: filter by category
 }
 ```
+
+**Note:** Replace `{your-library-id}` with your actual library ID (e.g., "ui-components", "game-assets").
 
 **Returns:** Array of component manifests with metadata, state machines, and input definitions.
 
@@ -109,9 +98,11 @@ The Rive MCP Server exposes several tools for working with Rive components:
 ```typescript
 // MCP Tool: getComponentDetail
 {
-  "componentId": "astralis-slot-machine"
+  "componentId": "{your-component-id}"
 }
 ```
+
+**Note:** Replace `{your-component-id}` with your actual component ID from the list_components results.
 
 **Returns:** Complete component manifest including:
 - State machine definitions
@@ -124,10 +115,12 @@ The Rive MCP Server exposes several tools for working with Rive components:
 ```typescript
 // MCP Tool: getRuntimeSurface
 {
-  "componentId": "astralis-slot-machine",
+  "componentId": "{your-component-id}",
   "framework": "react"  // optional: react | vue | stencil
 }
 ```
+
+**Note:** Replace `{your-component-id}` with your actual component ID.
 
 **Returns:** Runtime integration surface with:
 - Current state machine state
@@ -155,11 +148,13 @@ The Rive MCP Server exposes several tools for working with Rive components:
 ```typescript
 // MCP Tool: generateWrapper
 {
-  "componentId": "ui-loading-spinner",
+  "componentId": "{your-component-id}",
   "framework": "react",
   "typescript": true
 }
 ```
+
+**Note:** Replace `{your-component-id}` with your actual component ID.
 
 **Returns:** Production-ready component wrapper code for your framework.
 
@@ -169,55 +164,60 @@ The Rive MCP Server exposes several tools for working with Rive components:
 
 ```bash
 # 1. List available UI components
-MCP: listComponents { "libraryId": "ui-components" }
+MCP: listComponents { "libraryId": "{your-library-id}" }
 
-# 2. Get details for the loading spinner
-MCP: getComponentDetail { "componentId": "ui-loading-spinner" }
+# 2. Get details for a specific component
+MCP: getComponentDetail { "componentId": "{your-component-id}" }
 
 # 3. Get React integration surface
 MCP: getRuntimeSurface {
-  "componentId": "ui-loading-spinner",
+  "componentId": "{your-component-id}",
   "framework": "react"
 }
 
 # 4. Generate React wrapper
 MCP: generateWrapper {
-  "componentId": "ui-loading-spinner",
+  "componentId": "{your-component-id}",
   "framework": "react",
   "typescript": true
 }
 ```
 
+**Note:** Replace `{your-library-id}` and `{your-component-id}` with your actual values.
+
 ### Workflow 2: Create a Multi-Component Experience
 
 ```bash
-# 1. List game components
-MCP: listComponents { "category": "game-elements" }
+# 1. List components by category
+MCP: listComponents { "category": "{your-category}" }
 
-# 2. Compose a celebration scene
-MCP: composeScene { "sceneId": "celebration-big-win" }
+# 2. Compose a multi-component scene
+MCP: composeScene { "sceneId": "{your-scene-id}" }
 
 # 3. Generate wrappers for each component
-MCP: generateWrapper { "componentId": "astralis-slot-machine", "framework": "react" }
-MCP: generateWrapper { "componentId": "game-character-avatar", "framework": "react" }
+MCP: generateWrapper { "componentId": "{component-id-1}", "framework": "react" }
+MCP: generateWrapper { "componentId": "{component-id-2}", "framework": "react" }
 ```
+
+**Note:** Replace `{your-category}`, `{your-scene-id}`, and component IDs with your actual values.
 
 ### Workflow 3: Explore Component Capabilities
 
 ```bash
-# 1. Get slot machine details
-MCP: getComponentDetail { "componentId": "astralis-slot-machine" }
+# 1. Get component details
+MCP: getComponentDetail { "componentId": "{your-component-id}" }
 
 # Response includes:
-# - State machines: SlotMachineSM
-# - Inputs: isSpinning (bool), spinSpeed (number), winAmount (number)
-# - Triggers: triggerSpin, stopReels
-# - Events: SpinStarted, SpinComplete, WinSequenceComplete
-# - Data bindings: reelSymbols (array), payoutTable (object)
+# - State machines: Names and definitions
+# - Inputs: Boolean, number, and trigger inputs
+# - Events: Component-emitted events
+# - Data bindings: Array, object, and other data types
 
 # 2. Get runtime surface to see current state
-MCP: getRuntimeSurface { "componentId": "astralis-slot-machine" }
+MCP: getRuntimeSurface { "componentId": "{your-component-id}" }
 ```
+
+**Note:** Replace `{your-component-id}` with your actual component ID. The response structure will vary based on your component's configuration.
 
 ## Configuration Options
 
@@ -372,7 +372,7 @@ npm test -- composeScene.test.ts
 
 ### Issue: "No components found"
 
-**Solution:** Run `npm run seed-manifests` to populate example data.
+**Solution:** Import your Rive files using the `import_rive_file` MCP tool to populate component data.
 
 ### Issue: "Configuration validation failed"
 
@@ -384,10 +384,10 @@ npm test -- composeScene.test.ts
 
 ## Next Steps
 
-1. **Explore the Examples:** Review the example manifests in `libs/rive-manifests/examples/`
-2. **Add Your Own Components:** Create component manifests following the RiveComponentManifest type
+1. **Import Your Rive Files:** Use the `import_rive_file` MCP tool to import your .riv files
+2. **Explore Components:** Use the `list_components` tool to discover available components
 3. **Create Motion Specs:** Define multi-component scenes in `libs/motion-specs/`
-4. **Generate Wrappers:** Use the generateWrapper tool to create framework-specific components
+4. **Generate Wrappers:** Use the `generate_wrapper` tool to create framework-specific components
 5. **Build Your App:** Integrate generated wrappers into your React, Vue, or Stencil application
 
 ## Resources

@@ -235,16 +235,14 @@ Comprehensive 400+ line documentation covering:
 - Best practices
 - File location reference
 
-#### Example Compositions (`/docs/examples/scene-composition-examples.json`)
+#### Example Composition Patterns
 
-Four complete example scenes:
+Common scene composition patterns:
 
 1. **Simple Timeline Scene**: Basic sequential logo and text animations
 2. **Event-Driven Scene**: Jackpot celebration with chained events
 3. **State Machine Scene**: Slot machine with idle/spinning/win states
 4. **Hybrid Orchestration**: Onboarding flow combining all strategies
-
-**Lines**: ~900
 
 ## Total Implementation
 
@@ -447,8 +445,6 @@ if (!result.valid) {
 
 /docs/
 ├── SCENE_COMPOSITION.md           # Main documentation
-├── examples/
-│   └── scene-composition-examples.json
 └── SCENE_COMPOSITION_IMPLEMENTATION_SUMMARY.md
 ```
 

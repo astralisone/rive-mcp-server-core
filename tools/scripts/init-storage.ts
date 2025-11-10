@@ -91,9 +91,8 @@ async function initStorage(options: InitOptions = {}): Promise<void> {
 
   console.log('\n✅ Storage initialization complete!\n');
   console.log('Next steps:');
-  console.log('  1. Run: npm run seed-manifests (to populate with example data)');
-  console.log('  2. Run: npm run validate-setup (to verify configuration)');
-  console.log('  3. Start the MCP server: npm start\n');
+  console.log('  1. Run: npm run validate-setup (to verify configuration)');
+  console.log('  2. Start the MCP server: npm start\n');
 }
 
 // CLI execution

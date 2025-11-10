@@ -25,13 +25,10 @@ npm run build:packages
 # 3. Initialize storage
 npm run init-storage
 
-# 4. Seed example data
-npm run seed-manifests
-
-# 5. Verify setup
+# 4. Verify setup
 npm run validate-setup
 
-# 6. Start the MCP server (outputs connection config)
+# 5. Start the MCP server (outputs connection config)
 npm run mcp-server
 ```
 
@@ -186,14 +183,7 @@ rive-mcp-server-core/
 ├── tools/
 │   └── scripts/               # Setup and utility scripts
 │       ├── init-storage.ts    # Initialize storage structure
-│       ├── seed-manifests.ts  # Populate example data
 │       └── validate-setup.ts  # Verify configuration
-├── tests/
-│   └── fixtures/              # Test data and fixtures
-│       ├── manifests/         # Test manifests
-│       ├── runtime/           # Runtime surface fixtures
-│       ├── motion-specs/      # Scene composition fixtures
-│       └── assets/            # Mock asset metadata
 └── data/                      # Local storage (created by init-storage)
 ```
 
@@ -202,7 +192,6 @@ rive-mcp-server-core/
 ```bash
 # Setup
 npm run init-storage         # Create storage directory structure
-npm run seed-manifests       # Populate with example data
 npm run validate-setup       # Verify configuration
 
 # Development

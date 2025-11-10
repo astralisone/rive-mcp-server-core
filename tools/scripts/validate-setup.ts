@@ -108,19 +108,6 @@ async function validateSetup(options: ValidateOptions = {}): Promise<void> {
   const indexPath = path.join(basePath, 'manifests', 'index.json');
   results.push(await checkJsonFile(indexPath, 'Manifest index'));
 
-  // Check for example manifests
-  console.log('\nChecking for example data...');
-  const examplesPath = path.join(process.cwd(), 'libs', 'rive-manifests', 'examples');
-  results.push(await checkDirectoryExists(examplesPath, 'Examples directory'));
-  results.push(await checkFileExists(path.join(examplesPath, 'manifest-index.json'), 'Example manifest index'));
-
-  // Check test fixtures
-  console.log('\nChecking test fixtures...');
-  const fixturesPath = path.join(process.cwd(), 'tests', 'fixtures');
-  results.push(await checkDirectoryExists(fixturesPath, 'Test fixtures directory'));
-  results.push(await checkFileExists(path.join(fixturesPath, 'runtime', 'slot-machine-surface.json'), 'Runtime surface fixture'));
-  results.push(await checkFileExists(path.join(fixturesPath, 'motion-specs', 'celebration-sequence.json'), 'Motion spec fixture'));
-
   // Print results
   console.log('\n' + '='.repeat(60));
   console.log('VALIDATION RESULTS');
@@ -157,8 +144,7 @@ async function validateSetup(options: ValidateOptions = {}): Promise<void> {
     console.log('❌ Some validation checks failed.\n');
     console.log('Recommendations:');
     console.log('  1. Run: npm run init-storage (to create missing directories)');
-    console.log('  2. Run: npm run seed-manifests (to populate with example data)');
-    console.log('  3. Check configuration files in the root directory\n');
+    console.log('  2. Check configuration files in the root directory\n');
     process.exit(1);
   }
 }

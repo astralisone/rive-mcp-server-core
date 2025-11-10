@@ -239,7 +239,6 @@ await composeSceneEnhanced({
 - Runtime: `/packages/scene-composer/src/runtime/scene-runtime.ts`
 - Validation: `/packages/scene-composer/src/validation/scene-validator.ts`
 - Codegen: `/packages/scene-composer/src/codegen/runtime-generator.ts`
-- Examples: `/docs/examples/scene-composition-examples.json`
 
 ## Common Patterns
 

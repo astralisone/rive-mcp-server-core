@@ -541,7 +541,7 @@ if (!result.valid) {
 
 ## Examples
 
-See `/docs/examples/scene-composition-examples.json` for complete examples:
+Common scene composition patterns:
 
 1. **Simple Timeline Scene**: Basic sequential animations
 2. **Event-Driven Scene**: Component communication
@@ -618,4 +618,3 @@ class TimelinePlayer {
 - **Validation**: `/packages/scene-composer/src/validation/scene-validator.ts`
 - **Code Gen**: `/packages/scene-composer/src/codegen/runtime-generator.ts`
 - **MCP Tool**: `/packages/mcp-server/src/tools/composeSceneEnhanced.ts`
-- **Examples**: `/docs/examples/scene-composition-examples.json`

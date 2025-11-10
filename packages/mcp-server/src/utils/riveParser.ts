@@ -1,10 +1,19 @@
 /**
  * Rive file parsing and runtime inspection utilities
- * Uses @rive-app/canvas runtime for deep inspection
+ * Uses @rive-app/canvas-advanced runtime for deep inspection with jsdom
+ *
+ * This implementation uses jsdom to provide a proper DOM environment for the Rive runtime.
+ * The @rive-app/canvas-advanced package requires Web APIs that are mocked via jsdom.
  */
 
 import * as fs from 'fs/promises';
+import * as fsSync from 'fs';
 import * as path from 'path';
+import { JSDOM } from 'jsdom';
+import { Canvas } from 'canvas';
+import fetch from 'node-fetch';
+import RiveCanvas from '@rive-app/canvas-advanced';
+import type { RiveCanvas as RiveCanvasType, File, Artboard, StateMachineInstance, SMIInput } from '@rive-app/canvas-advanced';
 import {
   RiveRuntimeSurface,
   RiveArtboard,
@@ -12,6 +21,146 @@ import {
   RiveStateMachineInput,
   RiveStateMachineEvent,
 } from '../types';
+
+// Singleton for Rive runtime
+let riveRuntime: RiveCanvasType | null = null;
+let runtimeInitializationAttempted = false;
+let runtimeInitializationError: Error | null = null;
+let jsdomInstance: JSDOM | null = null;
+
+/**
+ * Setup DOM environment using jsdom
+ */
+function setupDOMEnvironment(): void {
+  if (jsdomInstance) {
+    return; // Already setup
+  }
+
+  // Create a jsdom instance
+  jsdomInstance = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+    url: 'http://localhost',
+    pretendToBeVisual: true,
+    resources: 'usable',
+  });
+
+  const { window } = jsdomInstance;
+
+  // Set up global references
+  (global as any).window = window;
+  (global as any).document = window.document;
+  (global as any).HTMLCanvasElement = window.HTMLCanvasElement;
+  (global as any).XMLHttpRequest = window.XMLHttpRequest;
+
+  // Create a custom fetch that handles file system paths for WASM loading
+  (global as any).fetch = async (url: string | URL, options?: any) => {
+    const urlString = typeof url === 'string' ? url : url.toString();
+
+    // Handle file:// URLs and direct filesystem paths for WASM loading
+    if (urlString.startsWith('file://') || (urlString.includes('.wasm') && !urlString.startsWith('http'))) {
+      const filePath = urlString.replace('file://', '');
+      try {
+        const fileBuffer = fsSync.readFileSync(filePath);
+        return {
+          ok: true,
+          status: 200,
+          arrayBuffer: async () => fileBuffer.buffer.slice(fileBuffer.byteOffset, fileBuffer.byteOffset + fileBuffer.byteLength),
+          blob: async () => new Blob([fileBuffer]),
+          json: async () => JSON.parse(fileBuffer.toString()),
+          text: async () => fileBuffer.toString(),
+          headers: new Headers({ 'content-type': 'application/wasm' }),
+        };
+      } catch (error) {
+        console.error(`Failed to load WASM file: ${filePath}`, error);
+        return {
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+          arrayBuffer: async () => new ArrayBuffer(0),
+          blob: async () => new Blob([]),
+          json: async () => ({}),
+          text: async () => '',
+          headers: new Headers(),
+        };
+      }
+    }
+
+    // Fallback to node-fetch for http/https URLs
+    return fetch(url, options);
+  };
+
+  // Setup navigator carefully - it may be read-only
+  try {
+    (global as any).navigator = window.navigator;
+  } catch (err) {
+    // If navigator is read-only, define it with defineProperty
+    Object.defineProperty(global, 'navigator', {
+      value: window.navigator,
+      writable: true,
+      configurable: true,
+    });
+  }
+
+  // Polyfill for File API if needed
+  if (!global.File) {
+    (global as any).File = class File {
+      constructor(public content: any, public name: string) {}
+    };
+  }
+
+  // Setup canvas polyfill for 2D context
+  const originalCreateElement = window.document.createElement.bind(window.document);
+  window.document.createElement = function (tagName: string) {
+    if (tagName.toLowerCase() === 'canvas') {
+      const canvas = new Canvas(800, 600) as any;
+      // Add DOM-like properties
+      canvas.style = {};
+      canvas.addEventListener = () => {};
+      canvas.removeEventListener = () => {};
+      return canvas;
+    }
+    return originalCreateElement(tagName);
+  } as any;
+}
+
+/**
+ * Initialize and get the Rive runtime
+ * Returns null if initialization fails
+ */
+async function getRiveRuntime(): Promise<RiveCanvasType | null> {
+  if (runtimeInitializationError) {
+    return null;
+  }
+
+  if (!riveRuntime && !runtimeInitializationAttempted) {
+    runtimeInitializationAttempted = true;
+
+    try {
+      // Setup DOM environment first
+      setupDOMEnvironment();
+
+      // Find the WASM file path
+      const wasmPath = require.resolve('@rive-app/canvas-advanced/rive.wasm');
+
+      riveRuntime = await RiveCanvas({
+        locateFile: (file: string) => {
+          // Return the full filesystem path to the WASM file
+          if (file === 'rive.wasm' || file.endsWith('.wasm')) {
+            return wasmPath;
+          }
+          return file;
+        },
+      });
+
+      console.log('Rive runtime initialized successfully');
+    } catch (error) {
+      runtimeInitializationError = error instanceof Error ? error : new Error('Unknown error initializing Rive runtime');
+      console.error('Rive runtime initialization failed:', runtimeInitializationError.message);
+      return null;
+    }
+  }
+
+  return riveRuntime;
+}
 
 /**
  * Parse a Rive file and extract runtime surface information
@@ -23,10 +172,7 @@ export async function parseRiveFile(filePath: string): Promise<RiveRuntimeSurfac
     const fileBuffer = await fs.readFile(filePath);
     const fileStats = await fs.stat(filePath);
 
-    // Note: In a production environment, we would use @rive-app/canvas here
-    // For now, we'll create a mock implementation that can be replaced
-    // with actual Rive runtime integration
-
+    // Use the actual Rive runtime to parse the file
     const runtimeSurface = await inspectRiveRuntime(fileBuffer, filePath);
 
     return {
@@ -44,123 +190,178 @@ export async function parseRiveFile(filePath: string): Promise<RiveRuntimeSurfac
 
 /**
  * Inspect Rive file using runtime
- * TODO: Replace with actual @rive-app/canvas implementation
+ * Uses @rive-app/canvas-advanced to extract actual runtime surface information
  */
 async function inspectRiveRuntime(
   fileBuffer: Buffer,
   filePath: string
 ): Promise<Omit<RiveRuntimeSurface, 'metadata'>> {
-  // This is a mock implementation
-  // In production, this should use:
-  // const rive = new Rive({ buffer: fileBuffer });
-  // and extract actual artboards, state machines, inputs, and events
-
+  const rive = await getRiveRuntime();
   const componentId = path.basename(filePath, '.riv');
 
-  return {
-    componentId,
-    artboards: await extractArtboards(fileBuffer),
-    stateMachines: await extractStateMachines(fileBuffer),
-    events: await extractEvents(fileBuffer),
-    dataBindings: [],
-  };
+  // Load the Rive file - convert Buffer to Uint8Array
+  const riveFile = await rive.load(new Uint8Array(fileBuffer));
+
+  try {
+    // Extract artboards
+    const artboards = await extractArtboards(riveFile);
+
+    // Extract state machines and events from all artboards
+    const { stateMachines, events } = await extractStateMachinesAndEvents(riveFile, artboards);
+
+    return {
+      componentId,
+      artboards,
+      stateMachines,
+      events,
+      dataBindings: [],
+    };
+  } finally {
+    // Clean up the file reference
+    if (riveFile && typeof riveFile.unref === 'function') {
+      riveFile.unref();
+    }
+  }
 }
 
 /**
  * Extract artboards from Rive file
- * TODO: Implement with actual Rive runtime
+ * Uses the Rive runtime to get actual artboard information
  */
-async function extractArtboards(fileBuffer: Buffer): Promise<RiveArtboard[]> {
-  // Mock implementation - replace with actual Rive runtime inspection
-  // const rive = await loadRive(fileBuffer);
-  // return rive.artboards.map(ab => ({
-  //   name: ab.name,
-  //   width: ab.bounds.width,
-  //   height: ab.bounds.height
-  // }));
+async function extractArtboards(riveFile: File): Promise<RiveArtboard[]> {
+  const artboards: RiveArtboard[] = [];
+  const artboardCount = riveFile.artboardCount();
 
-  return [
-    {
-      name: 'Main',
-      width: 500,
-      height: 500,
-    },
-  ];
+  for (let i = 0; i < artboardCount; i++) {
+    const artboard = riveFile.artboardByIndex(i);
+
+    try {
+      const bounds = artboard.bounds;
+
+      artboards.push({
+        name: artboard.name,
+        width: bounds.maxX - bounds.minX,
+        height: bounds.maxY - bounds.minY,
+      });
+    } finally {
+      // Clean up artboard instance
+      if (artboard && typeof artboard.delete === 'function') {
+        artboard.delete();
+      }
+    }
+  }
+
+  return artboards;
 }
 
 /**
- * Extract state machines and their inputs from Rive file
- * TODO: Implement with actual Rive runtime
+ * Extract state machines, their inputs, and events from Rive file
+ * Uses the Rive runtime to inspect all artboards and their state machines
  */
-async function extractStateMachines(fileBuffer: Buffer): Promise<RiveStateMachine[]> {
-  // Mock implementation - replace with actual Rive runtime inspection
-  // const rive = await loadRive(fileBuffer);
-  // return rive.stateMachines.map(sm => ({
-  //   name: sm.name,
-  //   inputs: sm.inputs.map(input => ({
-  //     name: input.name,
-  //     type: input.type,
-  //     defaultValue: input.value
-  //   })),
-  //   layerCount: sm.layerCount
-  // }));
+async function extractStateMachinesAndEvents(
+  riveFile: File,
+  artboards: RiveArtboard[]
+): Promise<{
+  stateMachines: RiveStateMachine[];
+  events: RiveStateMachineEvent[];
+}> {
+  const stateMachines: RiveStateMachine[] = [];
+  const eventsSet = new Set<string>();
+  const events: RiveStateMachineEvent[] = [];
 
-  return [
-    {
-      name: 'State Machine 1',
-      inputs: [
-        {
-          name: 'isHover',
-          type: 'bool',
-          defaultValue: false,
-        },
-        {
-          name: 'progress',
-          type: 'number',
-          defaultValue: 0,
-        },
-        {
-          name: 'trigger',
-          type: 'trigger',
-        },
-      ],
-      layerCount: 1,
-    },
-  ];
-}
+  const rive = await getRiveRuntime();
 
-/**
- * Extract events from Rive file
- * TODO: Implement with actual Rive runtime
- */
-async function extractEvents(fileBuffer: Buffer): Promise<RiveStateMachineEvent[]> {
-  // Mock implementation - replace with actual Rive runtime inspection
-  // const rive = await loadRive(fileBuffer);
-  // return rive.events.map(event => ({
-  //   name: event.name,
-  //   properties: event.properties
-  // }));
+  // Iterate through all artboards to collect state machines
+  for (let artboardIndex = 0; artboardIndex < artboards.length; artboardIndex++) {
+    const artboard = riveFile.artboardByIndex(artboardIndex);
 
-  return [
-    {
-      name: 'onComplete',
-      properties: {},
-    },
-    {
-      name: 'onStateChange',
-      properties: {
-        state: 'string',
-      },
-    },
-  ];
+    try {
+      const stateMachineCount = artboard.stateMachineCount();
+
+      for (let smIndex = 0; smIndex < stateMachineCount; smIndex++) {
+        const stateMachine = artboard.stateMachineByIndex(smIndex);
+        const stateMachineInstance = new rive.StateMachineInstance(stateMachine, artboard);
+
+        try {
+          // Extract inputs from the state machine instance
+          const inputs: RiveStateMachineInput[] = [];
+          const inputCount = stateMachineInstance.inputCount();
+
+          for (let inputIndex = 0; inputIndex < inputCount; inputIndex++) {
+            const input = stateMachineInstance.input(inputIndex);
+
+            // Map input type from Rive constants to our type strings
+            let inputType: 'bool' | 'number' | 'trigger';
+            if (input.type === rive.SMIInput.bool) {
+              inputType = 'bool';
+            } else if (input.type === rive.SMIInput.number) {
+              inputType = 'number';
+            } else if (input.type === rive.SMIInput.trigger) {
+              inputType = 'trigger';
+            } else {
+              // Default to trigger for unknown types
+              inputType = 'trigger';
+            }
+
+            inputs.push({
+              name: input.name,
+              type: inputType,
+              defaultValue: input.value,
+            });
+          }
+
+          // Add state machine info
+          stateMachines.push({
+            name: stateMachine.name,
+            inputs,
+            layerCount: 1, // Layer count is not directly exposed in the API
+          });
+
+          // Extract events by advancing the state machine briefly
+          // This is a heuristic approach - we advance the state machine to see if any events are reported
+          stateMachineInstance.advance(0.016); // Advance by one frame (~16ms)
+          const reportedEventCount = stateMachineInstance.reportedEventCount();
+
+          for (let eventIndex = 0; eventIndex < reportedEventCount; eventIndex++) {
+            const event = stateMachineInstance.reportedEventAt(eventIndex);
+            if (event && !eventsSet.has(event.name)) {
+              eventsSet.add(event.name);
+              events.push({
+                name: event.name,
+                properties: event.properties || {},
+              });
+            }
+          }
+        } finally {
+          // Clean up state machine instance
+          if (stateMachineInstance && typeof stateMachineInstance.delete === 'function') {
+            stateMachineInstance.delete();
+          }
+        }
+      }
+    } finally {
+      // Clean up artboard instance
+      if (artboard && typeof artboard.delete === 'function') {
+        artboard.delete();
+      }
+    }
+  }
+
+  return { stateMachines, events };
 }
 
 /**
  * Get Rive runtime version
  */
 function getRiveRuntimeVersion(): string {
-  // In production, this would return the actual @rive-app/canvas version
-  return '2.0.0-mock';
+  try {
+    // Get the version from package.json
+    const packageJson = require('@rive-app/canvas-advanced/package.json');
+    return packageJson.version || '2.0.0';
+  } catch (error) {
+    // Fallback if we can't read the package.json
+    return '2.0.0';
+  }
 }
 
 /**

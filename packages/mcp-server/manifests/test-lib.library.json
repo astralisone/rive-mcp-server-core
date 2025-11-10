@@ -1,0 +1,74 @@
+{
+  "id": "test-lib",
+  "name": "Imported Components",
+  "description": "Components imported from .riv files",
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "test-component",
+      "libraryId": "test-lib",
+      "name": "vehicles",
+      "description": "Imported from vehicles.riv",
+      "filePath": "/Users/gregorystarr/projects/rive-projects/rive-mcp-server-core/packages/mcp-server/tests/integration/fixtures/vehicles.riv",
+      "tags": [
+        "imported"
+      ],
+      "artboardName": "Truck",
+      "stateMachineName": "bumpy",
+      "createdAt": "2025-11-10T03:29:24.716Z",
+      "updatedAt": "2025-11-10T03:29:24.716Z",
+      "metadata": {
+        "runtimeSurface": {
+          "componentId": "vehicles",
+          "artboards": [
+            {
+              "name": "Truck",
+              "width": 1920,
+              "height": 1080
+            },
+            {
+              "name": "Jeep",
+              "width": 1000,
+              "height": 1000
+            }
+          ],
+          "stateMachines": [
+            {
+              "name": "bumpy",
+              "inputs": [
+                {
+                  "name": "bump",
+                  "type": "trigger"
+                }
+              ],
+              "layerCount": 1
+            },
+            {
+              "name": "weather",
+              "inputs": [
+                {
+                  "name": "Raining",
+                  "type": "bool"
+                }
+              ],
+              "layerCount": 1
+            }
+          ],
+          "events": [],
+          "dataBindings": [],
+          "metadata": {
+            "fileSize": 58792,
+            "parseDate": "2025-11-10T03:29:24.716Z",
+            "runtimeVersion": "2.32.0"
+          }
+        },
+        "importedAt": "2025-11-10T03:29:24.716Z"
+      }
+    }
+  ],
+  "tags": [
+    "imported"
+  ],
+  "createdAt": "2025-11-10T03:26:06.984Z",
+  "updatedAt": "2025-11-10T03:29:24.717Z"
+}

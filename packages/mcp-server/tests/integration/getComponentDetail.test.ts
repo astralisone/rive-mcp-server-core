@@ -2,110 +2,182 @@
  * Integration Tests for getComponentDetail MCP Tool
  */
 
-import { describe, it, expect, beforeAll } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
 import * as path from 'path';
 import * as fs from 'fs/promises';
-
-const TEST_DATA_PATH = path.join(__dirname, '..', '..', '..', '..', 'tests', 'fixtures');
+import { setStorageConfig, saveLibrary, getComponentById } from '../../src/utils/storage';
+import { RiveLibrary } from '../../src/types';
 
 describe('getComponentDetail MCP Tool', () => {
-  let manifestIndex: any;
+  let testManifestsDir: string;
+  let testAssetsDir: string;
+  let testComponentIds: string[];
 
   beforeAll(async () => {
-    const indexPath = path.join(TEST_DATA_PATH, 'manifests', 'index.json');
-    try {
-      const indexContent = await fs.readFile(indexPath, 'utf-8');
-      manifestIndex = JSON.parse(indexContent);
-    } catch (error) {
-      console.warn('Test manifest index not found');
-      manifestIndex = { components: {} };
+    // Create temporary test directories
+    const tmpDir = await fs.mkdtemp(path.join('/tmp', 'rive-test-detail-'));
+    testManifestsDir = path.join(tmpDir, 'manifests');
+    testAssetsDir = path.join(tmpDir, 'assets');
+
+    await fs.mkdir(testManifestsDir, { recursive: true });
+    await fs.mkdir(testAssetsDir, { recursive: true });
+
+    // Configure storage to use test directories
+    setStorageConfig({
+      manifestsPath: testManifestsDir,
+      assetsPath: testAssetsDir,
+    });
+
+    // Generate real test data
+    const testLibrary: RiveLibrary = {
+      id: 'test-library',
+      name: 'Test Component Library',
+      version: '1.0.0',
+      description: 'Library for component detail testing',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      components: [
+        {
+          id: 'slot-machine-component',
+          libraryId: 'test-library',
+          name: 'Slot Machine Component',
+          description: 'Detailed slot machine with state machines',
+          filePath: path.join(testAssetsDir, 'slot-machine-component.riv'),
+          artboardName: 'MainArtboard',
+          stateMachineName: 'SlotMachineSM',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          tags: ['game', 'casino', 'interactive'],
+          metadata: {
+            category: 'game-elements',
+            complexity: 'high',
+            recommendedFrameworks: ['react', 'vue'],
+          },
+        },
+        {
+          id: 'loading-spinner-component',
+          libraryId: 'test-library',
+          name: 'Loading Spinner',
+          description: 'Animated loading spinner with multiple styles',
+          filePath: path.join(testAssetsDir, 'loading-spinner-component.riv'),
+          artboardName: 'SpinnerArtboard',
+          stateMachineName: 'LoadingStateMachine',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          tags: ['ui', 'loading', 'animation'],
+          metadata: {
+            category: 'ui-elements',
+            complexity: 'low',
+          },
+        },
+      ],
+      tags: ['test'],
+    };
+
+    await saveLibrary(testLibrary);
+    testComponentIds = testLibrary.components.map(c => c.id);
+  });
+
+  afterAll(async () => {
+    // Clean up test directories
+    if (testManifestsDir) {
+      await fs.rm(path.dirname(testManifestsDir), { recursive: true, force: true });
     }
   });
 
   it('should retrieve component by ID', async () => {
-    const componentIds = Object.keys(manifestIndex.components || {});
+    const componentId = testComponentIds[0];
+    const componentManifest = await getComponentById(componentId);
 
-    if (componentIds.length > 0) {
-      const componentId = componentIds[0];
-      const component = manifestIndex.components[componentId];
-
-      expect(component).toBeDefined();
-      expect(component.id).toBe(componentId);
-    }
+    expect(componentManifest).toBeDefined();
+    expect(componentManifest).not.toBeNull();
+    expect(componentManifest!.component.id).toBe(componentId);
   });
 
   it('should return complete component manifest', async () => {
-    const componentIds = Object.keys(manifestIndex.components || {});
+    const componentId = testComponentIds[0];
+    const componentManifest = await getComponentById(componentId);
 
-    if (componentIds.length > 0) {
-      const component = manifestIndex.components[componentIds[0]];
+    expect(componentManifest).not.toBeNull();
 
-      expect(component).toHaveProperty('id');
-      expect(component).toHaveProperty('name');
-      expect(component).toHaveProperty('version');
-      expect(component).toHaveProperty('libraryId');
-      expect(component).toHaveProperty('riveFile');
-      expect(component).toHaveProperty('stateMachines');
-    }
+    const { component, library } = componentManifest!;
+
+    expect(component).toHaveProperty('id');
+    expect(component).toHaveProperty('name');
+    expect(component).toHaveProperty('libraryId');
+    expect(component).toHaveProperty('filePath');
+    expect(component).toHaveProperty('artboardName');
+    expect(component).toHaveProperty('stateMachineName');
+    expect(component).toHaveProperty('createdAt');
+    expect(component).toHaveProperty('updatedAt');
+    expect(component).toHaveProperty('tags');
+    expect(component).toHaveProperty('metadata');
+
+    expect(library).toHaveProperty('id');
+    expect(library).toHaveProperty('name');
+    expect(library).toHaveProperty('version');
   });
 
-  it('should include state machine definitions', async () => {
-    const componentIds = Object.keys(manifestIndex.components || {});
+  it('should include artboard and state machine names', async () => {
+    const componentId = testComponentIds[0];
+    const componentManifest = await getComponentById(componentId);
 
-    if (componentIds.length > 0) {
-      const component = manifestIndex.components[componentIds[0]];
+    expect(componentManifest).not.toBeNull();
 
-      expect(Array.isArray(component.stateMachines)).toBe(true);
+    const { component } = componentManifest!;
 
-      if (component.stateMachines.length > 0) {
-        const sm = component.stateMachines[0];
-        expect(sm).toHaveProperty('name');
-        expect(sm).toHaveProperty('inputs');
-        expect(Array.isArray(sm.inputs)).toBe(true);
-      }
-    }
+    expect(component.artboardName).toBeDefined();
+    expect(component.stateMachineName).toBeDefined();
+    expect(typeof component.artboardName).toBe('string');
+    expect(typeof component.stateMachineName).toBe('string');
   });
 
-  it('should include input definitions with types', async () => {
-    const componentIds = Object.keys(manifestIndex.components || {});
+  it('should include component tags', async () => {
+    const componentId = testComponentIds[0];
+    const componentManifest = await getComponentById(componentId);
 
-    if (componentIds.length > 0) {
-      const component = manifestIndex.components[componentIds[0]];
+    expect(componentManifest).not.toBeNull();
 
-      if (component.stateMachines && component.stateMachines.length > 0) {
-        const inputs = component.stateMachines[0].inputs;
+    const { component } = componentManifest!;
 
-        if (inputs && inputs.length > 0) {
-          const input = inputs[0];
-          expect(input).toHaveProperty('name');
-          expect(input).toHaveProperty('type');
-          expect(['bool', 'number', 'trigger', 'string']).toContain(input.type);
-        }
-      }
-    }
+    expect(Array.isArray(component.tags)).toBe(true);
+    expect(component.tags!.length).toBeGreaterThan(0);
+    expect(component.tags).toContain('game');
+    expect(component.tags).toContain('casino');
   });
 
-  it('should include event definitions', async () => {
-    const componentIds = Object.keys(manifestIndex.components || {});
+  it('should include component metadata', async () => {
+    const componentId = testComponentIds[0];
+    const componentManifest = await getComponentById(componentId);
 
-    if (componentIds.length > 0) {
-      const component = manifestIndex.components[componentIds[0]];
+    expect(componentManifest).not.toBeNull();
 
-      if (component.stateMachines && component.stateMachines.length > 0) {
-        const events = component.stateMachines[0].events;
+    const { component } = componentManifest!;
 
-        if (events && events.length > 0) {
-          const event = events[0];
-          expect(event).toHaveProperty('name');
-        }
-      }
-    }
+    expect(component.metadata).toBeDefined();
+    expect(component.metadata).toHaveProperty('category');
+    expect(component.metadata!.category).toBe('game-elements');
   });
 
   it('should handle non-existent component gracefully', async () => {
-    const nonExistentId = 'non-existent-component-id';
-    const component = manifestIndex.components[nonExistentId];
+    const nonExistentId = 'non-existent-component-id-12345';
+    const componentManifest = await getComponentById(nonExistentId);
 
-    expect(component).toBeUndefined();
+    expect(componentManifest).toBeNull();
+  });
+
+  it('should retrieve different components with correct details', async () => {
+    const componentId1 = testComponentIds[0];
+    const componentId2 = testComponentIds[1];
+
+    const manifest1 = await getComponentById(componentId1);
+    const manifest2 = await getComponentById(componentId2);
+
+    expect(manifest1).not.toBeNull();
+    expect(manifest2).not.toBeNull();
+
+    expect(manifest1!.component.id).not.toBe(manifest2!.component.id);
+    expect(manifest1!.component.name).not.toBe(manifest2!.component.name);
+    expect(manifest1!.library.id).toBe(manifest2!.library.id); // Same library
   });
 });

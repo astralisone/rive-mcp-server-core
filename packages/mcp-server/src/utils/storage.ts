@@ -20,8 +20,8 @@ interface StorageConfig {
 }
 
 const defaultConfig: StorageConfig = {
-  manifestsPath: process.env.MANIFESTS_PATH || path.join(process.cwd(), 'libs', 'rive-manifests'),
-  assetsPath: process.env.ASSETS_PATH || path.join(process.cwd(), 'assets', 'rive'),
+  manifestsPath: process.env.MANIFESTS_PATH || path.join(process.cwd(), 'manifests'),
+  assetsPath: process.env.ASSETS_PATH || path.join(process.cwd(), 'assets'),
 };
 
 /**

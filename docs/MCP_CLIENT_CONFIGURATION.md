@@ -246,12 +246,14 @@ List Rive components with filtering options.
 {
   "name": "list_components",
   "arguments": {
-    "libraryId": "ui-components",
+    "libraryId": "{your-library-id}",
     "tags": ["button"],
     "search": "animated"
   }
 }
 ```
+
+**Note:** Replace `{your-library-id}` with your actual library ID.
 
 ### 3. get_component_detail
 Get detailed information about a specific component.
@@ -260,10 +262,12 @@ Get detailed information about a specific component.
 {
   "name": "get_component_detail",
   "arguments": {
-    "id": "button-animation"
+    "id": "{your-component-id}"
   }
 }
 ```
+
+**Note:** Replace `{your-component-id}` with your actual component ID.
 
 ### 4. get_runtime_surface
 Extract runtime surface (state machines, inputs, events) from a component.
@@ -272,10 +276,12 @@ Extract runtime surface (state machines, inputs, events) from a component.
 {
   "name": "get_runtime_surface",
   "arguments": {
-    "componentId": "button-animation"
+    "componentId": "{your-component-id}"
   }
 }
 ```
+
+**Note:** Replace `{your-component-id}` with your actual component ID.
 
 ### 5. generate_wrapper
 Generate framework-specific wrapper components.
@@ -301,12 +307,12 @@ Compose multi-component orchestrated scenes.
 {
   "name": "compose_scene",
   "arguments": {
-    "name": "casino-lobby",
-    "description": "Animated casino lobby scene",
+    "name": "{your-scene-name}",
+    "description": "Description of your scene",
     "components": [
       {
-        "componentId": "slot-machine",
-        "instanceName": "slot1",
+        "componentId": "{component-id-1}",
+        "instanceName": "instance1",
         "position": { "x": 100, "y": 200 }
       }
     ],
@@ -314,7 +320,7 @@ Compose multi-component orchestrated scenes.
       "timeline": [
         {
           "time": 0,
-          "component": "slot1",
+          "component": "instance1",
           "action": "play"
         }
       ]
@@ -322,6 +328,8 @@ Compose multi-component orchestrated scenes.
   }
 }
 ```
+
+**Note:** Replace `{your-scene-name}` and `{component-id-1}` with your actual scene name and component IDs.
 
 ## Troubleshooting
 

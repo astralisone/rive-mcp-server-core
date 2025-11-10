@@ -1,0 +1,80 @@
+{
+  "id": "vehicles-library",
+  "name": "Imported Components",
+  "description": "Components imported from .riv files",
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "vehicles-component",
+      "libraryId": "vehicles-library",
+      "name": "Vehicles Animation",
+      "description": "Imported from vehicles.riv",
+      "filePath": "/Users/gregorystarr/projects/rive-projects/rive-mcp-server-core/packages/mcp-server/tests/integration/fixtures/vehicles.riv",
+      "tags": [
+        "imported"
+      ],
+      "artboardName": "Main",
+      "stateMachineName": "State Machine 1",
+      "createdAt": "2025-11-10T03:23:42.276Z",
+      "updatedAt": "2025-11-10T03:23:42.276Z",
+      "metadata": {
+        "runtimeSurface": {
+          "componentId": "vehicles",
+          "artboards": [
+            {
+              "name": "Main",
+              "width": 500,
+              "height": 500
+            }
+          ],
+          "stateMachines": [
+            {
+              "name": "State Machine 1",
+              "inputs": [
+                {
+                  "name": "isHover",
+                  "type": "bool",
+                  "defaultValue": false
+                },
+                {
+                  "name": "progress",
+                  "type": "number",
+                  "defaultValue": 0
+                },
+                {
+                  "name": "trigger",
+                  "type": "trigger"
+                }
+              ],
+              "layerCount": 1
+            }
+          ],
+          "events": [
+            {
+              "name": "onComplete",
+              "properties": {}
+            },
+            {
+              "name": "onStateChange",
+              "properties": {
+                "state": "string"
+              }
+            }
+          ],
+          "dataBindings": [],
+          "metadata": {
+            "fileSize": 58792,
+            "parseDate": "2025-11-10T03:23:42.275Z",
+            "runtimeVersion": "2.0.0-mock"
+          }
+        },
+        "importedAt": "2025-11-10T03:23:42.276Z"
+      }
+    }
+  ],
+  "tags": [
+    "imported"
+  ],
+  "createdAt": "2025-11-10T03:23:42.277Z",
+  "updatedAt": "2025-11-10T03:23:42.277Z"
+}

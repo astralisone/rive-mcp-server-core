@@ -2,6 +2,7 @@ import { getComponentById } from '../utils/storage';
 import { MCPToolResponse, ComposeSceneParams } from '../types';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { logger } from '../utils/logger';
 
 export interface ComposedScene {
   id: string;
@@ -49,9 +50,16 @@ export interface ComposedScene {
 export async function composeScene(
   params: ComposeSceneParams
 ): Promise<MCPToolResponse<ComposedScene>> {
+  logger.info('composeScene called', {
+    sceneName: params.name,
+    componentCount: params.components?.length || 0,
+    hasOrchestration: Boolean(params.orchestration)
+  });
+
   try {
     // Validate required parameters
     if (!params.name) {
+      logger.warn('composeScene called without scene name');
       return {
         status: 'error',
         tool: 'composeScene',
@@ -64,6 +72,7 @@ export async function composeScene(
     }
 
     if (!params.components || params.components.length === 0) {
+      logger.warn('composeScene called without components', { sceneName: params.name });
       return {
         status: 'error',
         tool: 'composeScene',
@@ -76,11 +85,17 @@ export async function composeScene(
     }
 
     // Validate all components exist
+    logger.debug('Validating scene components', { componentCount: params.components.length });
     const validatedComponents = [];
     for (const comp of params.components) {
+      logger.debug('Validating component', { componentId: comp.componentId });
       const componentManifest = await getComponentById(comp.componentId);
 
       if (!componentManifest) {
+        logger.warn('Component not found during scene composition', {
+          componentId: comp.componentId,
+          sceneName: params.name
+        });
         return {
           status: 'error',
           tool: 'composeScene',
@@ -103,8 +118,13 @@ export async function composeScene(
       });
     }
 
+    logger.debug('All components validated successfully', {
+      validatedCount: validatedComponents.length
+    });
+
     // Validate interactions
     if (validatedComponents.some((c) => c.interactions)) {
+      logger.debug('Validating component interactions');
       const componentIds = validatedComponents.map((c) => c.componentId);
       const instanceNames = validatedComponents.map((c) => c.instanceName);
 
@@ -130,10 +150,17 @@ export async function composeScene(
 
     // Validate timeline
     if (params.orchestration?.timeline) {
+      logger.debug('Validating timeline orchestration', {
+        timelineItemCount: params.orchestration.timeline.length
+      });
       const instanceNames = validatedComponents.map((c) => c.instanceName);
 
       for (const timelineItem of params.orchestration.timeline) {
         if (!instanceNames.includes(timelineItem.component)) {
+          logger.warn('Invalid timeline component reference', {
+            component: timelineItem.component,
+            availableInstances: instanceNames
+          });
           return {
             status: 'error',
             tool: 'composeScene',
@@ -149,11 +176,18 @@ export async function composeScene(
 
     // Validate rules
     if (params.orchestration?.rules) {
+      logger.debug('Validating orchestration rules', {
+        ruleCount: params.orchestration.rules.length
+      });
       const instanceNames = validatedComponents.map((c) => c.instanceName);
 
       for (const rule of params.orchestration.rules) {
         for (const action of rule.actions) {
           if (!instanceNames.includes(action.component)) {
+            logger.warn('Invalid rule action component reference', {
+              component: action.component,
+              availableInstances: instanceNames
+            });
             return {
               status: 'error',
               tool: 'composeScene',
@@ -169,6 +203,7 @@ export async function composeScene(
     }
 
     // Create composed scene
+    logger.debug('Creating composed scene');
     const sceneId = generateSceneId(params.name);
     const composedScene: ComposedScene = {
       id: sceneId,
@@ -186,7 +221,17 @@ export async function composeScene(
     };
 
     // Save scene manifest
+    logger.debug('Saving scene manifest', { sceneId, sceneName: params.name });
     await saveSceneManifest(composedScene);
+
+    logger.info('composeScene completed successfully', {
+      sceneId,
+      sceneName: params.name,
+      componentCount: composedScene.components.length,
+      hasTimeline: composedScene.metadata.hasTimeline,
+      hasRules: composedScene.metadata.hasRules,
+      hasInteractions: composedScene.metadata.hasInteractions
+    });
 
     return {
       status: 'success',
@@ -195,6 +240,12 @@ export async function composeScene(
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
+    logger.error('composeScene failed', {
+      sceneName: params.name,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
+
     return {
       status: 'error',
       tool: 'composeScene',

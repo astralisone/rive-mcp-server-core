@@ -9,6 +9,7 @@ import {
   GeneratedComponent,
 } from "../generators";
 import { toPascalCase } from "../generators/utils";
+import { logger } from "../utils/logger";
 
 export interface GenerateWrapperParams {
   surface: RuntimeSurface;
@@ -35,8 +36,16 @@ export async function generateWrapper(params: GenerateWrapperParams): Promise<an
     writeToFile = true,
   } = params;
 
+  logger.info('generateWrapper called', {
+    componentId: surface?.componentId,
+    framework,
+    riveSrc,
+    writeToFile
+  });
+
   // Validate surface
   if (!surface || !surface.componentId) {
+    logger.warn('generateWrapper called with invalid surface: missing componentId');
     return {
       status: "error",
       message: "Invalid surface: componentId is required",
@@ -44,6 +53,9 @@ export async function generateWrapper(params: GenerateWrapperParams): Promise<an
   }
 
   if (!surface.stateMachines || surface.stateMachines.length === 0) {
+    logger.warn('generateWrapper called with invalid surface: no state machines', {
+      componentId: surface.componentId
+    });
     return {
       status: "error",
       message: "Invalid surface: at least one state machine is required",
@@ -52,12 +64,14 @@ export async function generateWrapper(params: GenerateWrapperParams): Promise<an
 
   // Generate component name
   const componentName = providedName || toPascalCase(surface.componentId);
+  logger.debug('Component name resolved', { componentName });
 
   try {
     let results: GeneratedComponent[];
 
     if (framework === "all") {
       // Generate for all frameworks
+      logger.debug('Generating wrappers for all frameworks');
       const context = {
         surface,
         componentName,
@@ -67,6 +81,7 @@ export async function generateWrapper(params: GenerateWrapperParams): Promise<an
       results = await generateAllWrappers(context);
     } else {
       // Generate for specific framework
+      logger.debug('Generating wrapper for specific framework', { framework });
       const context: GeneratorContext = {
         surface,
         framework: framework as TargetFramework,
@@ -77,12 +92,25 @@ export async function generateWrapper(params: GenerateWrapperParams): Promise<an
       results = [await generateWrapperCore(context)];
     }
 
+    logger.debug(`Generated ${results.length} wrapper component(s)`);
+
     // Write to files if requested
     if (writeToFile) {
+      logger.debug('Writing components to file system');
       for (const result of results) {
         await writeComponentToFile(result);
+        logger.debug('Component written to file', {
+          framework: result.framework,
+          filePath: result.filePath
+        });
       }
     }
+
+    logger.info('generateWrapper completed successfully', {
+      componentId: surface.componentId,
+      componentCount: results.length,
+      frameworks: results.map(r => r.framework)
+    });
 
     return {
       status: "success",
@@ -95,6 +123,13 @@ export async function generateWrapper(params: GenerateWrapperParams): Promise<an
       message: `Successfully generated ${results.length} wrapper component(s)`,
     };
   } catch (error: any) {
+    logger.error('generateWrapper failed', {
+      componentId: surface?.componentId,
+      framework,
+      error: error.message,
+      stack: error.stack
+    });
+
     return {
       status: "error",
       message: `Failed to generate wrapper: ${error.message}`,

@@ -7,6 +7,8 @@ import { getComponentDetail } from "./tools/getComponentDetail.js";
 import { getRuntimeSurface } from "./tools/getRuntimeSurface.js";
 import { generateWrapper } from "./tools/generateWrapper.js";
 import { composeScene } from "./tools/composeScene.js";
+import { importRiveFile } from "./tools/importRiveFile.js";
+import { logger } from "./utils/logger.js";
 
 const server = new Server(
   {
@@ -22,6 +24,7 @@ const server = new Server(
 
 // Register tool list handler
 server.setRequestHandler(ListToolsRequestSchema, async () => {
+  logger.debug('ListTools request received');
   return {
     tools: [
       {
@@ -155,6 +158,32 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
           required: ["name", "components"]
         }
+      },
+      {
+        name: "import_rive_file",
+        description: "Import a .riv file and auto-generate manifest from it. Accepts file path and extracts all metadata automatically.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            filePath: {
+              type: "string",
+              description: "Absolute path to the .riv file"
+            },
+            libraryId: {
+              type: "string",
+              description: "Optional library ID (defaults to 'imported-components')"
+            },
+            componentName: {
+              type: "string",
+              description: "Optional component name (defaults to filename)"
+            },
+            componentId: {
+              type: "string",
+              description: "Optional component ID (defaults to filename)"
+            }
+          },
+          required: ["filePath"]
+        }
       }
     ]
   };
@@ -163,6 +192,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 // Register tool call handler
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
+
+  logger.info('Tool call received', {
+    tool: name,
+    hasArguments: Boolean(args && Object.keys(args).length > 0)
+  });
 
   try {
     let result;
@@ -186,9 +220,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case "compose_scene":
         result = await composeScene(args as any);
         break;
+      case "import_rive_file":
+        result = await importRiveFile(args as any);
+        break;
       default:
+        logger.warn('Unknown tool requested', { tool: name });
         throw new Error(`Unknown tool: ${name}`);
     }
+
+    logger.debug('Tool call completed', {
+      tool: name,
+      status: result.status || 'unknown'
+    });
 
     return {
       content: [
@@ -199,6 +242,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       ]
     };
   } catch (error) {
+    logger.error('Tool call failed', {
+      tool: name,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
+    });
+
     return {
       content: [
         {
@@ -238,6 +287,7 @@ function outputConnectionConfig() {
   console.error(JSON.stringify(config, null, 2));
   console.error("\n" + "=".repeat(80));
   console.error("Available Tools:");
+  console.error("  • import_rive_file     - Import .riv file and auto-generate manifest");
   console.error("  • list_libraries       - List all Rive libraries");
   console.error("  • list_components      - List Rive components");
   console.error("  • get_component_detail - Get component details");
@@ -250,9 +300,20 @@ function outputConnectionConfig() {
 
 // Start server
 const transport = new StdioServerTransport();
+logger.info('Starting MCP server', {
+  serverName: 'astralismotion-rive-mcp',
+  version: '0.1.0',
+  logLevel: logger.getLevel()
+});
+
 server.connect(transport).then(() => {
+  logger.info('MCP server connected successfully');
   outputConnectionConfig();
 }).catch((error) => {
+  logger.error('Failed to start server', {
+    error: error instanceof Error ? error.message : String(error),
+    stack: error instanceof Error ? error.stack : undefined
+  });
   console.error("Failed to start server:", error);
   process.exit(1);
 });
