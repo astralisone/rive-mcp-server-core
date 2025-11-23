@@ -8,6 +8,11 @@ import { getRuntimeSurface } from "./tools/getRuntimeSurface.js";
 import { generateWrapper } from "./tools/generateWrapper.js";
 import { composeScene } from "./tools/composeScene.js";
 import { importRiveFile } from "./tools/importRiveFile.js";
+import { optimizeRiveAsset } from "./tools/optimizeRiveAsset.js";
+import { mapInteractions } from "./tools/mapInteractions.js";
+import { generateStoryboard } from "./tools/generateStoryboard.js";
+import { validateComponent } from "./tools/validateComponent.js";
+import { publishComponent } from "./tools/publishComponent.js";
 import { logger } from "./utils/logger.js";
 
 const server = new Server(
@@ -184,6 +189,193 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
           required: ["filePath"]
         }
+      },
+      {
+        name: "optimize_rive_asset",
+        description: "Optimize a .riv asset for size and runtime performance (e.g., strip unused artboards, recompress assets, and tune for mobile/desktop targets). Returns an optimization report and an optional optimized asset reference.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            filePath: {
+              type: "string",
+              description: "Filesystem path or storage URI to the .riv file to optimize"
+            },
+            componentId: {
+              type: "string",
+              description: "Optional componentId if the file contains multiple components"
+            },
+            target: {
+              type: "string",
+              enum: ["mobile", "desktop", "web", "native"],
+              description: "Optimization target profile"
+            },
+            aggressive: {
+              type: "boolean",
+              description: "If true, applies more aggressive optimization strategies. Default: false"
+            },
+            maxSizeKB: {
+              type: "number",
+              description: "Optional target maximum size in kilobytes"
+            },
+            dryRun: {
+              type: "boolean",
+              description: "If true, only returns a report without modifying the asset"
+            },
+            simulate: {
+              type: "boolean",
+              description: "If true, compute optimization plan without modifying the file"
+            }
+          }
+        }
+      },
+      {
+        name: "map_interactions",
+        description: "Infer and/or configure mappings between UX interactions (hover, click, scroll, etc.) and Rive state machine inputs/events for a given component.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            componentId: {
+              type: "string",
+              description: "ID of the Rive component"
+            },
+            interactions: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: ["hover", "click", "tap", "press", "focus", "blur", "scroll_progress", "route_change", "visible_in_viewport", "custom"]
+              },
+              description: "List of interaction types to map",
+              minItems: 1
+            },
+            customInteractionNames: {
+              type: "array",
+              items: { type: "string" },
+              description: "Custom interaction labels if 'custom' is used"
+            },
+            framework: {
+              type: "string",
+              enum: ["react", "vue", "stencil", "none"],
+              description: "Framework hint for integration examples"
+            },
+            autoInfer: {
+              type: "boolean",
+              description: "If true, heuristically infer mappings. Default: true"
+            }
+          },
+          required: ["componentId", "interactions"]
+        }
+      },
+      {
+        name: "generate_storyboard",
+        description: "Generate a storyboard/scene specification describing how multiple Rive components should orchestrate over time (sequence, timing, events, transitions).",
+        inputSchema: {
+          type: "object",
+          properties: {
+            sceneId: {
+              type: "string",
+              description: "Logical ID for the storyboard scene"
+            },
+            components: {
+              type: "array",
+              items: { type: "string" },
+              description: "List of component IDs in approximate play order",
+              minItems: 1
+            },
+            orchestrationMode: {
+              type: "string",
+              enum: ["sequential", "parallel", "mixed"],
+              description: "High-level orchestration strategy"
+            },
+            durationSeconds: {
+              type: "number",
+              description: "Optional total target duration in seconds"
+            },
+            exportFormat: {
+              type: "string",
+              enum: ["json", "json+svg", "json+png"],
+              description: "Output format for the storyboard"
+            },
+            breakpoints: {
+              type: "array",
+              items: { type: "string" },
+              description: "Semantic breakpoints or phases within the scene"
+            }
+          },
+          required: ["sceneId", "components", "orchestrationMode"]
+        }
+      },
+      {
+        name: "validate_component",
+        description: "Run static and simulated runtime validation for a Rive component to catch missing inputs, unreachable states, performance risks, and integration issues.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            componentId: {
+              type: "string",
+              description: "ID of the Rive component to validate"
+            },
+            filePath: {
+              type: "string",
+              description: "Optional direct path to the .riv file"
+            },
+            strict: {
+              type: "boolean",
+              description: "If true, treat warnings as errors. Default: false"
+            },
+            simulationProfile: {
+              type: "string",
+              enum: ["default", "mobile_low_end", "mobile_high_end", "desktop", "web"],
+              description: "Profile for performance thresholds"
+            },
+            maxSimulatedSeconds: {
+              type: "number",
+              description: "Maximum simulated runtime duration. Default: 5"
+            }
+          }
+        }
+      },
+      {
+        name: "publish_component",
+        description: "Publish a Rive component (asset, manifest, wrappers, and optional previews) to a versioned registry or storage backend.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            componentId: {
+              type: "string",
+              description: "ID of the component to publish"
+            },
+            version: {
+              type: "string",
+              description: "Version identifier (semver, e.g., '1.1.0')"
+            },
+            registry: {
+              type: "string",
+              description: "Target registry or storage location (e.g., 's3://bucket/', 'local://path/')"
+            },
+            releaseChannel: {
+              type: "string",
+              enum: ["alpha", "beta", "rc", "stable"],
+              description: "Release channel label. Default: stable"
+            },
+            includeWrappers: {
+              type: "boolean",
+              description: "If true, publish generated wrappers. Default: true"
+            },
+            changelog: {
+              type: "string",
+              description: "Human-readable changelog/notes"
+            },
+            metadata: {
+              type: "object",
+              description: "Optional arbitrary metadata to attach"
+            },
+            dryRun: {
+              type: "boolean",
+              description: "If true, compute URIs without actually publishing"
+            }
+          },
+          required: ["componentId", "version", "registry"]
+        }
       }
     ]
   };
@@ -222,6 +414,21 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         break;
       case "import_rive_file":
         result = await importRiveFile(args as any);
+        break;
+      case "optimize_rive_asset":
+        result = await optimizeRiveAsset(args as any);
+        break;
+      case "map_interactions":
+        result = await mapInteractions(args as any);
+        break;
+      case "generate_storyboard":
+        result = await generateStoryboard(args as any);
+        break;
+      case "validate_component":
+        result = await validateComponent(args as any);
+        break;
+      case "publish_component":
+        result = await publishComponent(args as any);
         break;
       default:
         logger.warn('Unknown tool requested', { tool: name });
@@ -294,6 +501,11 @@ function outputConnectionConfig() {
   console.error("  • get_runtime_surface  - Extract state machines & inputs");
   console.error("  • generate_wrapper     - Generate React/Vue/Stencil wrappers");
   console.error("  • compose_scene        - Compose multi-component scenes");
+  console.error("  • optimize_rive_asset  - Optimize .riv for size & performance");
+  console.error("  • map_interactions     - Map UX interactions to Rive inputs");
+  console.error("  • generate_storyboard  - Generate multi-component storyboards");
+  console.error("  • validate_component   - Validate component for production");
+  console.error("  • publish_component    - Publish to registry/CDN");
   console.error("=".repeat(80));
   console.error("\n✓ Server ready and listening on stdio\n");
 }
